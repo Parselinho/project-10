@@ -16,7 +16,12 @@ function App() {
   }, []);
 
   return (
-    <div>App</div>
+    <div>
+      <h1>Courses:</h1>
+      <ul>
+        { courses.map(course => <li key={course.id}>{course.title}</li>) }
+      </ul>
+    </div>
   )
 }
 
