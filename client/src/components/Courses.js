@@ -1,5 +1,7 @@
 import React, {useEffect, useState} from 'react';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
+import Header from './Header';
 
 function Courses() {
     const [courses, setCourses] = useState([]);
@@ -17,10 +19,16 @@ function Courses() {
   
     return (
       <div>
+      <Header />
         <h1>Courses:</h1>
         <ul>
-          { courses.map(course => <li key={course.id}>{course.title}</li>) }
+            {courses.map(course => (
+                <li key={course.id}>
+                    <Link to={`/courses/${course.id}`}>{course.title}</Link>
+                </li>
+            ))}
         </ul>
+        <Link to="/courses/create">Create Course</Link>
       </div>
     )
 }
