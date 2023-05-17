@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Head from './Head';
 
 const Header = () => {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
@@ -26,25 +27,23 @@ const Header = () => {
   };
 
   return (
-    <header>
-      <div className="wrap header--flex">
-        <h1 className="header--logo"><a href="/">Courses</a></h1>
-        <nav>
-          {!authenticatedUser ? (
-            <ul className="header--signedout">
-              <li><Link to="/signin">Sign In</Link></li>
-              <li><Link to="/signup">Sign Up</Link></li>
-            </ul>
-          ) : (
-            <ul className="header--signedin">
-              <li>Welcome, {authenticatedUser.firstName} {authenticatedUser.lastName}!</li>
-              <li><Link to="/signout">Sign Out</Link></li>
-            </ul>
-          )}
-        </nav>
-      </div>
-    </header>
+    <><Head /><header>
+          <div className="wrap header--flex">
+              <h1 className="header--logo"><a href="/">Courses</a></h1>
+              <nav>
+                  {!authenticatedUser ? (
+                      <ul className="header--signedout">
+                          <li><Link to="/signin">Sign In</Link></li>
+                          <li><Link to="/signup">Sign Up</Link></li>
+                      </ul>
+                  ) : (
+                      <ul className="header--signedin">
+                          <li>Welcome, {authenticatedUser.firstName} {authenticatedUser.lastName}!</li>
+                          <li><Link to="/signout">Sign Out</Link></li>
+                      </ul>
+                  )}
+              </nav>
+          </div>
+      </header></>
   );
-};
-
-export default Header;
+}
