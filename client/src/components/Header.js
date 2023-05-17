@@ -1,20 +1,50 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Link } from 'react-router-dom';
 
-const Header = () => (
-    <Helmet>
-        <html lang="en" />
-        <meta charset="UTF-8" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="description" content="Treehouse Full Stack JavaScript Project 10 | Full Stack App with React and a REST API" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico" type="image/x-icon" />
-        <title>Courses</title>
-        <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,300;0,400;0,700;1,300;1,400&display=swap" rel="stylesheet" />
-        <link href="../styles/reset.css" rel="stylesheet" />
-        <link href="../styles/global.css" rel="stylesheet" />
-    </Helmet>
-);
+const Header = () => {
+  const [authenticatedUser, setAuthenticatedUser] = useState(null);
+
+  const handleSignIn = () => {
+    // Navigate to the sign-in page.
+    history.push('/sign-in');
+  };
+
+  const handleSignUp = () => {
+    // Navigate to the sign-up page.
+    history.push('/sign-up');
+  };
+
+  const handleSignOut = () => {
+    // Sign out the user and redirect to the default route.
+    axios.post('/api/users/sign-out')
+      .then(() => {
+        history.push('/');
+      })
+      .catch(error => {
+        console.log('Error signing out', error);
+      });
+  };
+
+  return (
+    <header>
+      <div className="wrap header--flex">
+        <h1 className="header--logo"><a href="/">Courses</a></h1>
+        <nav>
+          {!authenticatedUser ? (
+            <ul className="header--signedout">
+              <li><Link to="/signin">Sign In</Link></li>
+              <li><Link to="/signup">Sign Up</Link></li>
+            </ul>
+          ) : (
+            <ul className="header--signedin">
+              <li>Welcome, {authenticatedUser.firstName} {authenticatedUser.lastName}!</li>
+              <li><Link to="/signout">Sign Out</Link></li>
+            </ul>
+          )}
+        </nav>
+      </div>
+    </header>
+  );
+};
 
 export default Header;
