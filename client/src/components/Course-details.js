@@ -1,36 +1,54 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
-import Header from './Header'; 
+import Head from './Head'; 
 
 const CourseDetail = () => {
     const { id } = useParams();
     const history = useHistory();
-    const [course, setCourse] = useState({});
-  
+    const [course, setCourse] = useState(null);
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
+
     useEffect(() => {
         axios.get(`http://localhost:5000/api/courses/${id}`)
         .then(response => {
             setCourse(response.data);
+            setIsLoading(false);
         }) 
         .catch(error => { 
-            console.log('Error fetching and parsing data', error);
+            setError('Error fetching and parsing data');
+            setIsLoading(false);
         });
     }, [id]);
 
     const deleteCourse = () => {
-        axios.delete(`http://localhost:5000/api/courses/${id}`)
-        .then(() => {
-            history.push("/courses");
-        })
-        .catch(error => {
-            console.log('Error deleting course', error);
-        });
+        if (window.confirm('Are you sure you want to delete this course?')) {
+            axios.delete(`http://localhost:5000/api/courses/${id}`)
+            .then(() => {
+                history.push("/courses");
+            })
+            .catch(error => {
+                setError('Error deleting course');
+            });
+        }
+    }
+
+    if (isLoading) {
+        return <div>Loading...</div>
+    }
+
+    if (error) {
+        return <div>{error}</div>
+    }
+
+    if (course === null) {
+        return <div>Course not found</div>
     }
 
     return (
         <div>
-            <Header />
+            <Head />
             <div className="wrap">
                 <h2>Course Detail</h2>
                 <form>
