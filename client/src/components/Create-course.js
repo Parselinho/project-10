@@ -1,20 +1,43 @@
 import React, { useState } from 'react';
-import Header from './Header'; 
+import axios from 'axios';
+import { useHistory } from 'react-router-dom';
+import Head from './Head';
 
 const CreateCourse = () => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [estimatedTime, setEstimatedTime] = useState('');
     const [materialsNeeded, setMaterialsNeeded] = useState('');
+    const history = useHistory();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:5000/api/courses', {
+                title,
+                description,
+                estimatedTime,
+                materialsNeeded
+            });
+
+            if (response.status === 201) {
+                // course created successfully, navigate to the list of courses
+                history.push('/courses');
+            }
+        } catch (error) {
+            console.error("Error creating course", error);
+        }
+    };
 
     const handleCancel = (event) => {
         event.preventDefault();
-        // redirection logic here
+        history.push('/courses'); // navigate to the list of courses
     };
 
     return (
         <div>
-            <Header />
+            <Head />
             <main>
                 <div className="wrap">
                     <h2>Create Course</h2>
@@ -25,7 +48,7 @@ const CreateCourse = () => {
                             <li>Please provide a value for "Description"</li>
                         </ul>
                     </div>
-                    <form>
+                    <form onSubmit={handleSubmit}>
                         <div className="main--flex">
                             <div>
                                 <label htmlFor="courseTitle">Course Title</label>
