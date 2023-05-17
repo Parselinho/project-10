@@ -1,19 +1,21 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useHistory } from 'react-router-dom';
+import Head from './Head';
 
-const SignIn = () => {
-    const [email, setEmail] = useState('');
+const UserSignIn = () => {
+    const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
+
     const history = useHistory();
 
-    const handleSignIn = async (e) => {
-        e.preventDefault();
-
-        const encodedCredentials = window.btoa(`${email}:${password}`);
-        const authHeader = `Basic ${encodedCredentials}`;
+    const handleSubmit = async (event) => {
+        event.preventDefault();
 
         try {
+            const encodedCredentials = window.btoa(`${emailAddress}:${password}`);
+            const authHeader = `Basic ${encodedCredentials}`;
+
             const response = await axios.get('http://localhost:5000/api/users', {
                 headers: {
                     'Authorization': authHeader
@@ -30,24 +32,44 @@ const SignIn = () => {
         }
     };
 
-    const handleCancel = () => {
-        history.push('/'); // navigate to the default route
+    const handleCancel = (event) => {
+        event.preventDefault();
+        history.push('/courses'); // navigate to the list of courses
     };
 
     return (
-        <form onSubmit={handleSignIn}>
-            <label>
-                Email:
-                <input type="email" value={email} onChange={e => setEmail(e.target.value)} required />
-            </label>
-            <label>
-                Password:
-                <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-            </label>
-            <button type="submit">Sign In</button>
-            <button type="button" onClick={handleCancel}>Cancel</button>
-        </form>
-    );
+        <div>
+            <Head />
+            <main>
+                <div className="form--centered">
+                    <h2>Sign In</h2>
+                    <form onSubmit={handleSubmit}>
+                        <label htmlFor="emailAddress">Email Address</label>
+                        <input 
+                            id="emailAddress" 
+                            name="emailAddress" 
+                            type="email" 
+                            value={emailAddress}
+                            onChange={(e) => setEmailAddress(e.target.value)}
+                        />
+
+                        <label htmlFor="password">Password</label>
+                        <input 
+                            id="password" 
+                            name="password" 
+                            type="password" 
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+
+                        <button className="button" type="submit">Sign In</button>
+                        <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
+                    </form>
+                    <p>Don't have a user account? Click here to <a href="/sign-up">sign up</a>!</p>
+                </div>
+            </main>
+        </div>
+    )
 };
 
-export default SignIn;
+export default UserSignIn;
