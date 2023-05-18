@@ -8,10 +8,18 @@ const CreateCourse = () => {
     const [description, setDescription] = useState('');
     const [estimatedTime, setEstimatedTime] = useState('');
     const [materialsNeeded, setMaterialsNeeded] = useState('');
+    const [errors, setErrors] = useState([]);
     const history = useHistory();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        let errorMessages = [];
+        if (title === '') errorMessages.push("Please provide a value for 'Title'");
+        if (description === '') errorMessages.push("Please provide a value for 'Description'");
+        setErrors(errorMessages);
+
+        if (errorMessages.length > 0) return;
 
         try {
             const response = await axios.post('http://localhost:5000/api/courses', {
@@ -22,7 +30,6 @@ const CreateCourse = () => {
             });
 
             if (response.status === 201) {
-                // course created successfully, navigate to the list of courses
                 history.push('/courses');
             }
         } catch (error) {
@@ -41,13 +48,14 @@ const CreateCourse = () => {
             <main>
                 <div className="wrap">
                     <h2>Create Course</h2>
-                    <div className="validation--errors">
-                        <h3>Validation Errors</h3>
-                        <ul>
-                            <li>Please provide a value for "Title"</li>
-                            <li>Please provide a value for "Description"</li>
-                        </ul>
-                    </div>
+                    {errors.length > 0 && (
+                        <div className="validation--errors">
+                            <h3>Validation Errors</h3>
+                            <ul>
+                                {errors.map((error, i) => <li key={i}>{error}</li>)}
+                            </ul>
+                        </div>
+                    )}
                     <form onSubmit={handleSubmit}>
                         <div className="main--flex">
                             <div>
