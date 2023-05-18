@@ -55,14 +55,14 @@ const UpdateCourse = () => {
                             <p>By Joe Smith</p>
 
                             <label htmlFor="courseDescription">Course Description</label>
-                            <textarea id="courseDescription" name="description" onChange={handleChange}>{course.description}</textarea>
+                            <textarea id="courseDescription" name="description" value={course.description} onChange={handleChange}></textarea>
                         </div>
                         <div>
                             <label htmlFor="estimatedTime">Estimated Time</label>
                             <input id="estimatedTime" name="estimatedTime" type="text" value={course.estimatedTime} onChange={handleChange} />
 
                             <label htmlFor="materialsNeeded">Materials Needed</label>
-                            <textarea id="materialsNeeded" name="materialsNeeded" onChange={handleChange}>{course.materialsNeeded}</textarea>
+                            <textarea id="materialsNeeded" name="materialsNeeded" value={course.materialsNeeded} onChange={handleChange}></textarea>
                         </div>
                     </div>
                     <button className="button" type="submit">Update Course</button>
