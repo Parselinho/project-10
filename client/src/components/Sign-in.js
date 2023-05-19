@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Head from './Head';
 
 const UserSignIn = () => {
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
 
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -25,7 +25,7 @@ const UserSignIn = () => {
             if (response.status === 200) {
                 // user signed in successfully
                 // navigate to courses
-                history.push('/courses');
+                navigate.push('/courses');
             }
         } catch (error) {
             console.error("Error signing in", error);
@@ -34,7 +34,7 @@ const UserSignIn = () => {
 
     const handleCancel = (event) => {
         event.preventDefault();
-        history.push('/courses'); // navigate to the list of courses
+        navigate.push('/courses'); // navigate to the list of courses
     };
 
     return (
