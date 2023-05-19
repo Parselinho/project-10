@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { useParams, useHistory, Link } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
 import Head from './Head';
 
 const UpdateCourse = () => {
     const { id } = useParams();
-    const history = useHistory();
+    const navigate = useNavigate();
     const [course, setCourse] = useState({
         title: '',
         description: '',
@@ -34,7 +34,7 @@ const UpdateCourse = () => {
         event.preventDefault();
         axios.put(`http://localhost:5000/api/courses/${id}`, course)
             .then(() => {
-                history.push(`/courses/${id}`);
+                navigate(`/courses/${id}`);
             })
             .catch(error => {
                 console.log('Error updating course', error);
