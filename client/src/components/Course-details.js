@@ -63,7 +63,7 @@ function CourseDetail() {
             <Head />
             <div id="root">
             <header>
-            <div className="wrap">
+            <div className="wrap header--flex">
                 <h1 className="header--logo"><Link to="/">Courses</Link></h1>
                 <nav>
                     <ul className="header--signedin">
