@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Head from './Head';
 
 const CreateCourse = () => {
@@ -9,7 +9,7 @@ const CreateCourse = () => {
     const [estimatedTime, setEstimatedTime] = useState('');
     const [materialsNeeded, setMaterialsNeeded] = useState('');
     const [errors, setErrors] = useState([]);
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -30,7 +30,7 @@ const CreateCourse = () => {
             });
 
             if (response.status === 201) {
-                history.push('/courses');
+                navigate.push('/courses');
             }
         } catch (error) {
             console.error("Error creating course", error);
@@ -39,7 +39,7 @@ const CreateCourse = () => {
 
     const handleCancel = (event) => {
         event.preventDefault();
-        history.push('/courses'); // navigate to the list of courses
+        navigate.push('/courses'); // navigate to the list of courses
     };
 
     return (
