@@ -17,7 +17,9 @@ function CourseDetail() {
         axios.get(`http://localhost:5000/api/courses/${id}`, { cancelToken: source.token })
             .then(response => {
                 setCourse(response.data);
-                return axios.get(`http://localhost:5000/api/users/${response.data.userId}`, { cancelToken: source.token });
+                return axios.get(`http://localhost:5000/api/courses/${response.data.userId}`,
+                { cancelToken: source.token }
+              );
             })
             .then(response => {
                 setUser(response.data);
