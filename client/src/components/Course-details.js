@@ -62,6 +62,7 @@ function CourseDetail() {
         <>
             <Head />
             <div id="root">
+            <header>
             <div className="wrap">
                 <h1 className="header--logo"><Link to="/">Courses</Link></h1>
                 <nav>
@@ -71,6 +72,7 @@ function CourseDetail() {
                     </ul>
                 </nav>
             </div>
+            </header>
 
             <main>
                 <div className="actions--bar">
