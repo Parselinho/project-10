@@ -81,7 +81,7 @@ function CourseDetail() {
                     <div className="wrap">
                         <Link className="button" to={`/courses/${course.id}/update`}>Update Course</Link>
                         <button className="button" onClick={handleDelete}>Delete Course</button>
-                        <Link className="button button-secondary" to="/">Return to List</Link>
+                        <Link className="button button-secondary" to="/courses">Return to List</Link>
                     </div>
                 </div>
 
