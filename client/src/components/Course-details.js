@@ -98,7 +98,11 @@ function CourseDetail() {
                                 <p>{course.estimatedTime}</p>
 
                                 <h3 className="course--detail--title">Materials Needed</h3>
-                                <ul className="course--detail--list">{materials}</ul>
+                                <ul className="course--detail--list">
+                                    {materials.map((material, index) => (
+                                     <li key={index}>{material}</li>
+                                ))}
+                            </ul>
                             </div>
                         </div>
                     </form>
