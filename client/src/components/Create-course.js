@@ -30,7 +30,7 @@ const CreateCourse = () => {
             });
 
             if (response.status === 201) {
-                navigate.push('/courses');
+                navigate('/courses'); 
             }
         } catch (error) {
             console.error("Error creating course", error);
@@ -39,7 +39,7 @@ const CreateCourse = () => {
 
     const handleCancel = (event) => {
         event.preventDefault();
-        navigate.push('/courses'); // navigate to the list of courses
+        navigate('/courses'); // navigate to the list of courses
     };
 
     return (
