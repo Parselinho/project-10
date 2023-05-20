@@ -11,10 +11,14 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Courses />} />
-        <Route path="/courses/:id" element={<CourseDetail />} />
-        <Route path="/courses/create" element={<CreateCourse />} />
-        <Route path="/courses/:id/update" element={<UpdateCourse />} />
+        <Route path="/courses/*" element={
+          <Routes>
+            <Route path="/" element={<Courses />} />
+            <Route path="/:id" element={<CourseDetail />} />
+            <Route path="/create" element={<CreateCourse />} />
+            <Route path="/:id/update" element={<UpdateCourse />} />
+          </Routes>
+        } />
         <Route path="/signin" element={<UserSignIn />} />
         <Route path="/signup" element={<UserSignUp />} />
       </Routes>
@@ -22,4 +26,4 @@ function App() {
   );
 }
 
-export default App
+export default App;
