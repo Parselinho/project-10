@@ -56,8 +56,10 @@ function CourseDetail() {
             });
     };
 
-    const materials = course.materialsNeeded ? course.materialsNeeded.split('\n').map((item, index) => <li key={index}>{item}</li>) : [];
-
+    const materials = course.materialsNeeded && course.materialsNeeded.trim() 
+    ? course.materialsNeeded.split('\n').filter(item => item.trim() !== '').map((item, index) => <li key={index}>{item}</li>) 
+    : [];
+  
     return (
         <>
             <Head />
