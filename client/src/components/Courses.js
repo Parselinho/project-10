@@ -29,8 +29,12 @@ function Courses() {
     }
 
     return (
-        <div>
-            <Head />
+        
+            <><Head /><div>
+            <div>
+
+            </div>
+
             <main>
                 <div className="wrap main--grid">
                     {courses.map(course => (
@@ -49,7 +53,7 @@ function Courses() {
                     </Link>
                 </div>
             </main>
-        </div>
+        </div></>
     )
 }
 
