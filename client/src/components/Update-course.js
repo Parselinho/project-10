@@ -42,8 +42,24 @@ const UpdateCourse = () => {
     }
 
     return (
-        <div>
-            <Head />
+            <><Head />
+            <div id="root">
+            <header>
+                <div className="wrap header--flex">
+                    <h1 className="header--logo">
+                        <Link to="/courses">Courses</Link>
+                    </h1>
+                    <nav>
+                        <ul className="header--signedin">
+                            <li>Welcome Joe Smith!</li>
+                            <li>
+                                <Link to="/signout">Sign Out</Link>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </header>
+            <main>
             <div className="wrap">
                 <h2>Update Course</h2>
                 <form onSubmit={handleSubmit}>
@@ -69,7 +85,8 @@ const UpdateCourse = () => {
                     <Link className="button button-secondary" to={`/courses/${id}`}>Cancel</Link>
                 </form>
             </div>
-        </div>
+          </main>
+        </div></>
     )
 }
 
