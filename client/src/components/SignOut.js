@@ -1,16 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useContext } from 'react';
-import { AuthContext } from './context/AuthContext';
 
-const UserSignOut = () => {
+const UserSignOut = ({ onSignOut }) => {
     const navigate = useNavigate();
-    const { signOut } = useContext(AuthContext);
 
     useEffect(() => {
-        signOut();
+        onSignOut();
         navigate('/courses');
-    }, [signOut, navigate]);
+    }, [onSignOut, navigate]);
 
     return null;
 };
