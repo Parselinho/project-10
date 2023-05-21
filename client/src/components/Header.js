@@ -1,10 +1,16 @@
 import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 import Head from './Head';
 
 const Header = () => {
     const { isAuthenticated, user, signOut } = useContext(AuthContext);
+    const navigate = useNavigate();
+
+    const handleSignOut = () => {
+        signOut();
+        navigate('/courses');
+    };
 
     return (
         <><Head />
@@ -17,7 +23,7 @@ const Header = () => {
                     <ul className="header--signedin">
                         <li>Welcome, {user.name}!</li>
                         <li>
-                            <Link to="/sign-out">Sign Out</Link>
+                            <button onClick={handleSignOut}>Sign Out</button>
                         </li>
                     </ul>
                 ) : (
