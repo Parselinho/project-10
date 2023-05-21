@@ -1,25 +1,24 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from './context/AuthContext';
 import Head from './Head';
 
-const Header = () => {
-    const { isAuthenticated, user, signOut } = useContext(AuthContext);
+const Header = ({ user, onSignOut }) => {
     const navigate = useNavigate();
 
     const handleSignOut = () => {
-        signOut();
+        onSignOut();
         navigate('/courses');
     };
 
     return (
-        <><Head />
+        <>
+        <Head />
         <div className="wrap header--flex">
             <h1 className="header--logo">
                 <Link to="/courses">Courses</Link>
             </h1>
             <nav>
-                {isAuthenticated ? (
+                {user ? (
                     <ul className="header--signedin">
                         <li>Welcome, {user.name}!</li>
                         <li>
