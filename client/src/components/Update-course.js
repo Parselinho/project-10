@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import Head from './Head';
 
 const UpdateCourse = () => {
     const { id } = useParams();
@@ -42,8 +41,8 @@ const UpdateCourse = () => {
     }
 
     return (
-            <><Head />
-            <div id="root">
+            <>
+            <div>
             <header>
                 <div className="wrap header--flex">
                     <h1 className="header--logo">
