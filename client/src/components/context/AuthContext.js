@@ -12,22 +12,21 @@ export const AuthProvider = ({ children }) => {
       const encodedCredentials = btoa(`${emailAddress}:${password}`);
       
       // Make a GET request to the /users endpoint with the credentials in the Authorization header
-      const response = await axios.get('/api/users', {
+      const response = await axios.get('http://localhost:5000/api/users', {
         headers: {
           'Authorization': `Basic ${encodedCredentials}`
         }
       });
       
-      // If the response status is 200, set the user to be the authenticated user
+      // If the response status is 200, set the response.data to be the authenticated user
       if (response.status === 200) {
-        setAuthenticatedUser(response.data.user); // Make sure that user data is correctly referenced.
+        setAuthenticatedUser(response.data); // Update here
       }
     } catch (error) {
       console.error("Error signing in", error);
       throw error; // Re-throw the error so it can be caught and handled by the calling code
     }
   };
-  
 
   const signOut = () => {
     setAuthenticatedUser(null);
