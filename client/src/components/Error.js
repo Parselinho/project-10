@@ -5,7 +5,7 @@ const ErrorPage = () => {
     return (
         <>
             <div>
-            <header>
+            {/* <header>
                 <div className="wrap header--flex">
                     <h1 className="header--logo">
                         <Link to="/courses">Courses</Link>
@@ -19,7 +19,7 @@ const ErrorPage = () => {
                         </ul>
                     </nav>
                 </div>
-            </header>
+            </header> */}
             <main>
                 <div className="wrap">
                     <h2>Error</h2>
