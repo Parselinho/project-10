@@ -1,14 +1,12 @@
 import React, { createContext, useState } from 'react';
 import axios from 'axios'; 
-import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
-  const navigate = useNavigate(); // using react-router's useNavigate hook
 
-  const signIn = async (emailAddress, password) => {
+  const signIn = async (emailAddress, password, navigate) => {
     try {
       const encodedCredentials = btoa(`${emailAddress}:${password}`);
       const response = await axios.get('http://localhost:5000/api/users', {
