@@ -1,30 +1,28 @@
 import React, { createContext, useState } from 'react';
 import axios from 'axios'; 
+import { useNavigate } from 'react-router-dom';
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
+  const navigate = useNavigate(); // using react-router's useNavigate hook
 
   const signIn = async (emailAddress, password) => {
     try {
-      // Encode the credentials
       const encodedCredentials = btoa(`${emailAddress}:${password}`);
-      
-      // Make a GET request to the /users endpoint with the credentials in the Authorization header
       const response = await axios.get('http://localhost:5000/api/users', {
         headers: {
           'Authorization': `Basic ${encodedCredentials}`
         }
       });
-      
-      // If the response status is 200, set the response.data to be the authenticated user
       if (response.status === 200) {
-        setAuthenticatedUser(response.data); // Update here
+        setAuthenticatedUser(response.data);
+        navigate('/courses'); // navigate to the courses page after successful sign-in
       }
     } catch (error) {
       console.error("Error signing in", error);
-      throw error; // Re-throw the error so it can be caught and handled by the calling code
+      throw error; 
     }
   };
 
