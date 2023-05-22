@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
+import { AuthContext } from './context/AuthContext';
 // import Head from './Head';
 
 function CourseDetail() {
@@ -8,6 +9,7 @@ function CourseDetail() {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { authenticatedUser } = useContext(AuthContext);
 
     const { id } = useParams();
 
@@ -17,7 +19,7 @@ function CourseDetail() {
         axios.get(`http://localhost:5000/api/courses/${id}`, { cancelToken: source.token })
             .then(response => {
                 setCourse(response.data);
-                return axios.get(`http://localhost:5000/api/courses/${response.data.userId}`,
+                return axios.get(`http://localhost:5000/api/users/${response.data.userId}`,
                 { cancelToken: source.token }
               );
             })
@@ -68,10 +70,14 @@ function CourseDetail() {
             <div className="wrap header--flex">
                 <h1 className="header--logo"><Link to="/">Courses</Link></h1>
                 <nav>
-                    <ul className="header--signedin">
-                        <li>Welcome, {user && `${user.firstName} ${user.lastName}`}!</li>
-                        <li><Link to="/sign-out">Sign Out</Link></li>
-                    </ul>
+                {
+                        authenticatedUser
+                        ? <ul className="header--signedin">
+                              <li>Welcome, {authenticatedUser.firstName} {authenticatedUser.lastName}!</li>
+                              <li><Link to="/sign-out">Sign Out</Link></li>
+                          </ul>
+                        : [] 
+                    }
                 </nav>
             </div>
             </header>
