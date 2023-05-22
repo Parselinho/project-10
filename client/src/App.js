@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import axios from 'axios';
 
 import Header from "./components/Header";
 import Courses from "./components/Courses";
@@ -15,7 +16,19 @@ function App() {
   const [user, setUser] = useState(null);
 
   const signIn = async (email, password) => {
-    // handle sign in logic and setUser
+    try {
+        const response = await axios.get('http://localhost:5000/api/authenticate', {
+            headers: {
+                'Authorization': `Basic ${window.btoa(`${email}:${password}`)}`
+            }
+        });
+
+        if (response.status === 200) {
+            setUser(response.data.user);
+        }
+    } catch (error) {
+        console.error("Error signing in", error);
+    }
   };
 
   const signOut = () => {
@@ -25,7 +38,7 @@ function App() {
   return (
     <AuthContext.Provider value={{ user, signIn, signOut }}>
       <BrowserRouter>
-        <Header user={user} onSignOut={signOut} />
+        <Header />
         <Routes>
           <Route path="/courses/*" element={
             <Routes>
@@ -35,9 +48,9 @@ function App() {
               <Route path="/:id/update" element={<UpdateCourse />} />
             </Routes>
           } />
-          <Route path="/signin" element={<UserSignIn onSignIn={signIn} />} />
-          <Route path="/signup" element={<UserSignUp onSignUp={signIn} />} />
-          <Route path="/signout" element={<UserSignOut onSignOut={signOut} />} />
+          <Route path="/signin" element={<UserSignIn />} />
+          <Route path="/signup" element={<UserSignUp />} />
+          <Route path="/signout" element={<UserSignOut />} />
         </Routes>
       </BrowserRouter>
     </AuthContext.Provider>
