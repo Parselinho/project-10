@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
-import Head from './Head';
+// import Head from './Head';
 
 function Courses() {
     const [courses, setCourses] = useState([]);
@@ -29,8 +29,8 @@ function Courses() {
     }
 
     return (
-        
-            <><Head /><div id="root">
+
+        <div>
             <header>
                 <div className="wrap header--flex">
                 <h1 className='header--logo'>
@@ -65,7 +65,7 @@ function Courses() {
                     </Link>
                 </div>
             </main>
-        </div></>
+        </div>
     )
 }
 
