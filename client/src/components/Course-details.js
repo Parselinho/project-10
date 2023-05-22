@@ -1,7 +1,7 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import { AuthContext } from './context/AuthContext';
+// import { AuthContext } from './context/AuthContext';
 // import Head from './Head';
 
 function CourseDetail() {
@@ -9,7 +9,7 @@ function CourseDetail() {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    const { authenticatedUser } = useContext(AuthContext);
+    // const { authenticatedUser } = useContext(AuthContext);
 
     const { id } = useParams();
 
@@ -66,7 +66,7 @@ function CourseDetail() {
         <>
             {/* <Head /> */}
             <div>
-            <header>
+            {/* <header>
             <div className="wrap header--flex">
                 <h1 className="header--logo"><Link to="/">Courses</Link></h1>
                 <nav>
@@ -80,7 +80,7 @@ function CourseDetail() {
                     }
                 </nav>
             </div>
-            </header>
+            </header> */}
 
             <main>
                 <div className="actions--bar">
