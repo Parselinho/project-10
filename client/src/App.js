@@ -17,7 +17,7 @@ function App() {
 
   const signIn = async (email, password) => {
     try {
-        const response = await axios.get('http://localhost:5000/api/authenticate', {
+        const response = await axios.get('http://localhost:5000/api/users', {
             headers: {
                 'Authorization': `Basic ${window.btoa(`${email}:${password}`)}`
             }
@@ -25,6 +25,7 @@ function App() {
 
         if (response.status === 200) {
             setUser(response.data.user);
+            console.log(response.data.user)
         }
     } catch (error) {
         console.error("Error signing in", error);
