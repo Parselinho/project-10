@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Head from './Head';
 
 
 const ForbiddenPage = () => {
     return (
-        <><Head /><div id="root">
+        <><div>
             <header>
                 <div className="wrap header--flex">
                     <h1 className="header--logo">
