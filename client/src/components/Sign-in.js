@@ -6,16 +6,26 @@ const UserSignIn = () => {
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
 
-    const { signIn } = useContext(AuthContext);
+    const { signIn, authenticatedUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         // sign-in the user using the signIn function in the AuthContext
-        await signIn(emailAddress, password);
-        // redirect to the courses page
-        navigate('/courses');
+        try {
+            await signIn(emailAddress, password);
+            // Check if sign-in was successful
+            if (authenticatedUser) {
+                // redirect to the courses page
+                navigate('/courses');
+            } else {
+                // Handle error (e.g., show error message)
+            }
+        } catch (error) {
+            // Handle error (e.g., show error message)
+        }
     };
+    
 
     return (
         <div className="bounds">
@@ -47,7 +57,7 @@ const UserSignIn = () => {
                         </div>
                         <div className="grid-100 pad-bottom">
                             <button className="button" type="submit">Sign In</button>
-                            <Link to="/" className="button button-secondary">Cancel</Link>
+                            <Link to="/courses" className="button button-secondary">Cancel</Link>
                         </div>
                     </form>
                 </div>
