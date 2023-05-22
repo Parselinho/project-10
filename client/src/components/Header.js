@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import Head from './Head';
 
 const Header = ({ user, onSignOut }) => {
     const navigate = useNavigate();
@@ -12,7 +11,6 @@ const Header = ({ user, onSignOut }) => {
 
     return (
         <>
-        <Head />
         <div className="wrap header--flex">
             <h1 className="header--logo">
                 <Link to="/courses">Courses</Link>
