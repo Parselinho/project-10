@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 const ForbiddenPage = () => {
     return (
         <><div>
-            <header>
+            {/* <header>
                 <div className="wrap header--flex">
                     <h1 className="header--logo">
                         <Link to="/courses">Courses</Link>
@@ -19,7 +19,7 @@ const ForbiddenPage = () => {
                         </ul>
                     </nav>
                 </div>
-            </header>
+            </header> */}
             <main>
                 <div className="wrap">
                     <h2>Forbidden</h2>
