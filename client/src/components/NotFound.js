@@ -6,7 +6,7 @@ const NotFoundPage = () => {
     return (
         <>
         <div>
-            <header>
+            {/* <header>
                 <div className="wrap header--flex">
                     <h1 className="header--logo">
                         <Link to="/courses">Courses</Link>
@@ -20,7 +20,7 @@ const NotFoundPage = () => {
                         </ul>
                     </nav>
                 </div>
-            </header>
+            </header> */}
             <main>
                 <div className="wrap">
                     <h2>Not Found</h2>
