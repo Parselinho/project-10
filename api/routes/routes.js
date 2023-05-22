@@ -16,6 +16,16 @@ router.get('/users', authenticateUser, asyncHandler(async (req, res) => {
   res.status(200).json(user);
 }));
 
+// Get a specific user
+router.get('/users/:id', asyncHandler(async (req, res) => {
+  const user = await User.findByPk(req.params.id, {
+      attributes: ['id', 'firstName', 'lastName', 'emailAddress'],
+  });
+  // If the user exists, send it as JSON; otherwise, send a 404 error
+  user ? res.status(200).json(user) : res.status(404).json({ message: 'User not found' });
+}));
+
+
 // Create a new user
 router.post('/users', asyncHandler(async (req, res, next) => {
   try {
