@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate, Link } from 'react-router-dom';
-import Head from './Head';
+
 
 const CreateCourse = () => {
     const [title, setTitle] = useState('');
@@ -44,8 +44,7 @@ const CreateCourse = () => {
 
     return (
             <>
-            <Head />
-            <div id="root">
+            <div>
             <header>
                 <div className="wrap header--flex">
                     <h1 className="header--logo">
