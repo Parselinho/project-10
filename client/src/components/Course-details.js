@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-import Head from './Head';
+// import Head from './Head';
 
 function CourseDetail() {
     const [course, setCourse] = useState(null);
@@ -62,8 +62,8 @@ function CourseDetail() {
   
     return (
         <>
-            <Head />
-            <div id="root">
+            {/* <Head /> */}
+            <div>
             <header>
             <div className="wrap header--flex">
                 <h1 className="header--logo"><Link to="/">Courses</Link></h1>
