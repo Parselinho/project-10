@@ -31,7 +31,7 @@ function Courses() {
     return (
 
         <div>
-            <header>
+            {/* <header>
                 <div className="wrap header--flex">
                 <h1 className='header--logo'>
                 <Link to="/courses">Courses</Link>
@@ -45,7 +45,7 @@ function Courses() {
                     </ul>
                 </nav>
                 </div>
-            </header>
+            </header> */}
 
             <main>
                 <div className="wrap main--grid">
