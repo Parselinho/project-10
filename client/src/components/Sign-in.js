@@ -6,26 +6,19 @@ const UserSignIn = () => {
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
 
-    const { signIn, authenticatedUser } = useContext(AuthContext);
+    const { signIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
     const handleSubmit = async (event) => {
         event.preventDefault();
-        // sign-in the user using the signIn function in the AuthContext
         try {
-            await signIn(emailAddress, password);
-            // Check if sign-in was successful
-            if (authenticatedUser) {
-                // redirect to the courses page
-                navigate('/courses');
-            } else {
-                // Handle error (e.g., show error message)
-            }
+            await signIn(emailAddress, password, navigate);
+            // No need to check if sign-in was successful here. Navigation is handled in the signIn function.
         } catch (error) {
             // Handle error (e.g., show error message)
+            console.error("Error signing in", error);
         }
     };
-    
 
     return (
         <div className="bounds">
