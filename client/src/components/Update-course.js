@@ -1,92 +1,106 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate, Link } from 'react-router-dom';
+import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
+import { useNavigate, useParams } from 'react-router-dom';
+import { AuthContext } from './context/AuthContext';
 
 const UpdateCourse = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-    const [course, setCourse] = useState({
-        title: '',
-        description: '',
-        estimatedTime: '',
-        materialsNeeded: ''
-    });
+  const { authenticatedUser } = useContext(AuthContext); 
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [estimatedTime, setEstimatedTime] = useState('');
+  const [materialsNeeded, setMaterialsNeeded] = useState('');
+  const [errors, setErrors] = useState([]);
+  const navigate = useNavigate();
+  const { id } = useParams();
 
-    useEffect(() => {
-        axios.get(`http://localhost:5000/api/courses/${id}`)
-            .then(response => {
-                setCourse(response.data);
-            })
-            .catch(error => {
-                console.log('Error fetching and parsing data', error);
-            });
-    }, [id]);
+  useEffect(() => {
+    const fetchCourse = async () => {
+      try {
+        const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
+        const course = response.data;
+        setTitle(course.title);
+        setDescription(course.description);
+        setEstimatedTime(course.estimatedTime || '');
+        setMaterialsNeeded(course.materialsNeeded || '');
+      } catch (error) {
+        console.error("Error fetching course", error);
+      }
+    };
 
-    const handleChange = (event) => {
-        setCourse({
-            ...course,
-            [event.target.name]: event.target.value
-        });
+    fetchCourse();
+  }, [id]);
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+
+    let errorMessages = [];
+    if (title === '') errorMessages.push("Please provide a value for 'Title'");
+    if (description === '') errorMessages.push("Please provide a value for 'Description'");
+    setErrors(errorMessages);
+
+    if (errorMessages.length > 0) return;
+
+    try {
+
+        console.log("Authenticated User: ", authenticatedUser);
+
+      const response = await axios.put(`http://localhost:5000/api/courses/${id}`, {
+        title,
+        description,
+        estimatedTime,
+        materialsNeeded
+      }, {
+        headers: {
+          'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}`
+        }
+      });
+
+      if (response.status === 204) {
+        navigate('/courses');
+      }
+    } catch (error) {
+      console.error("Error updating course", error);
     }
+  };
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        axios.put(`http://localhost:5000/api/courses/${id}`, course)
-            .then(() => {
-                navigate(`/courses/${id}`);
-            })
-            .catch(error => {
-                console.log('Error updating course', error);
-            });
-    }
+  const handleCancel = (event) => {
+    event.preventDefault();
+    navigate('/courses');
+  };
 
-    return (
-            <>
-            <div>
-            {/* <header>
-                <div className="wrap header--flex">
-                    <h1 className="header--logo">
-                        <Link to="/courses">Courses</Link>
-                    </h1>
-                    <nav>
-                        <ul className="header--signedin">
-                            <li>Welcome Joe Smith!</li>
-                            <li>
-                                <Link to="/signout">Sign Out</Link>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </header> */}
-            <main>
-            <div className="wrap">
-                <h2>Update Course</h2>
-                <form onSubmit={handleSubmit}>
-                    <div className="main--flex">
-                        <div>
-                            <label htmlFor="courseTitle">Course Title</label>
-                            <input id="courseTitle" name="title" type="text" value={course.title} onChange={handleChange} />
-
-                            <p>By Joe Smith</p>
-
-                            <label htmlFor="courseDescription">Course Description</label>
-                            <textarea id="courseDescription" name="description" value={course.description} onChange={handleChange}></textarea>
-                        </div>
-                        <div>
-                            <label htmlFor="estimatedTime">Estimated Time</label>
-                            <input id="estimatedTime" name="estimatedTime" type="text" value={course.estimatedTime} onChange={handleChange} />
-
-                            <label htmlFor="materialsNeeded">Materials Needed</label>
-                            <textarea id="materialsNeeded" name="materialsNeeded" value={course.materialsNeeded} onChange={handleChange}></textarea>
-                        </div>
-                    </div>
-                    <button className="button" type="submit">Update Course</button>
-                    <Link className="button button-secondary" to={`/courses/${id}`}>Cancel</Link>
-                </form>
-            </div>
-          </main>
-        </div></>
-    )
-}
+  return (
+    <div>
+      <h1>Update Course</h1>
+      {errors.length > 0 && (
+        <div>
+          <h2>Validation Errors</h2>
+          <ul>
+            {errors.map((error, index) => <li key={index}>{error}</li>)}
+          </ul>
+        </div>
+      )}
+      <form onSubmit={handleSubmit}>
+        <label>
+          Title:
+          <input type="text" value={title} onChange={e => setTitle(e.target.value)} />
+        </label>
+        <label>
+          Description:
+          <textarea value={description} onChange={e => setDescription(e.target.value)} />
+        </label>
+        <label>
+          Estimated Time:
+          <input type="text" value={estimatedTime} onChange={e => setEstimatedTime(e.target.value)} />
+        </label>
+        <label>
+          Materials Needed:
+          <textarea value={materialsNeeded} onChange={e => setMaterialsNeeded(e.target.value)} />
+        </label>
+        <button type="submit">Update Course</button>
+        <button onClick={handleCancel}>Cancel</button>
+      </form>
+    </div>
+  );
+};
 
 export default UpdateCourse;
