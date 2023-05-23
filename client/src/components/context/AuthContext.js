@@ -16,6 +16,8 @@ export const AuthProvider = ({ children }) => {
       });
       if (response.status === 200) {
         setAuthenticatedUser(response.data);
+        console.log("Response Data: ", response.data);
+
         navigate('/courses'); // navigate to the courses page after successful sign-in
       }
     } catch (error) {
