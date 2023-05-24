@@ -1,4 +1,5 @@
-import React, { createContext, useState } from 'react';
+// Import btoa for encoding.
+import { createContext, useState } from 'react';
 import axios from 'axios'; 
 
 export const AuthContext = createContext();
@@ -15,7 +16,8 @@ export const AuthProvider = ({ children }) => {
         }
       });
       if (response.status === 200) {
-        setAuthenticatedUser(response.data);
+        // Include password in the state.
+        setAuthenticatedUser({ ...response.data, password });
         console.log("Response Data: ", response.data);
 
         navigate('/courses'); // navigate to the courses page after successful sign-in
