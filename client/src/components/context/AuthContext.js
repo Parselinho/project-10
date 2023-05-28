@@ -14,12 +14,14 @@ export const AuthProvider = ({ children }) => {
           'Authorization': `Basic ${encodedCredentials}`
         }
       });
+  
       if (response.status === 200) {
-        // Include password in the state.
-        setAuthenticatedUser({ ...response.data, password, emailAddress });
+        const user = { ...response.data, password, emailAddress };
+        setAuthenticatedUser(user);
         console.log("Response Data: ", response.data);
-
+  
         navigate('/courses'); // navigate to the courses page after successful sign-in
+        return user;
       }
     } catch (error) {
       console.error("Error signing in", error);
@@ -32,7 +34,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ authenticatedUser, signIn, signOut }}>
+    <AuthContext.Provider value={{ authenticatedUser, setAuthenticatedUser, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
