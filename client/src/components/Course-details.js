@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
 // import Head from './Head';
@@ -10,6 +10,7 @@ function CourseDetail() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
     const { authenticatedUser } = useContext(AuthContext);
+    const navigate = useNavigate();
 
     const { id } = useParams();
 
@@ -56,7 +57,7 @@ function CourseDetail() {
             }
         })
             .then(() => {
-                // redirecting to the list of courses
+                navigate('/courses');
             })
             .catch(error => {
                 console.log('Error deleting course:', error);
