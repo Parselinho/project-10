@@ -49,13 +49,13 @@ function CourseDetail() {
     }
 
     const handleDelete = () => {
-
-        const encodedCredentials = btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`);
-        axios.delete(`http://localhost:5000/api/courses/${id}`, {
-            headers: {
-                'Authorization': `Basic ${encodedCredentials}`
-            }
-        })
+        if (authenticatedUser) {
+            const encodedCredentials = btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`);
+            axios.delete(`http://localhost:5000/api/courses/${id}`, {
+                headers: {
+                    'Authorization': `Basic ${encodedCredentials}`
+                }
+            })
             .then(() => {
                 navigate('/courses');
             })
@@ -63,7 +63,12 @@ function CourseDetail() {
                 console.log('Error deleting course:', error);
                 setError('There was a problem deleting the course. Please try again.');
             });
+        } else {
+            // handle the case when authenticatedUser is null.
+            navigate('/signin');
+        }
     };
+    
 
     const materials = course.materialsNeeded && course.materialsNeeded.trim() 
     ? course.materialsNeeded.split('\n').filter(item => item.trim() !== '').map((item, index) => <li key={index}>{item}</li>) 
@@ -71,24 +76,7 @@ function CourseDetail() {
   
     return (
         <>
-            {/* <Head /> */}
             <div>
-            {/* <header>
-            <div className="wrap header--flex">
-                <h1 className="header--logo"><Link to="/">Courses</Link></h1>
-                <nav>
-                {
-                        authenticatedUser
-                        ? <ul className="header--signedin">
-                              <li>Welcome, {authenticatedUser.firstName} {authenticatedUser.lastName}!</li>
-                              <li><Link to="/sign-out">Sign Out</Link></li>
-                          </ul>
-                        : [] 
-                    }
-                </nav>
-            </div>
-            </header> */}
-
             <main>
                 <div className="actions--bar">
                     <div className="wrap">
