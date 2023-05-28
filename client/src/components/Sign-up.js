@@ -1,18 +1,23 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
+import { AuthContext } from './context/AuthContext';
 
-const UserSignUp = ({ onSignUp }) => {
+const UserSignUp = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
+
+    // Get signIn and setAuthenticatedUser from AuthContext
+    const { signIn, setAuthenticatedUser } = useContext(AuthContext);
 
     const onSubmit = async (data) => {
         try {
             const response = await axios.post('http://localhost:5000/api/users', data);
 
             if (response.status === 201) {
-                onSignUp(data.emailAddress, data.password);
+                const user = await signIn(data.emailAddress, data.password);
+                setAuthenticatedUser(user); // set the user as authenticated
                 navigate('/courses');
             }
         } catch (error) {
