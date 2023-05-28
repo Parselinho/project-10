@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import axios from 'axios';
-// import { AuthContext } from './context/AuthContext';
+import { AuthContext } from './context/AuthContext';
 // import Head from './Head';
 
 function CourseDetail() {
@@ -9,7 +9,7 @@ function CourseDetail() {
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
-    // const { authenticatedUser } = useContext(AuthContext);
+    const { authenticatedUser } = useContext(AuthContext);
 
     const { id } = useParams();
 
@@ -48,7 +48,13 @@ function CourseDetail() {
     }
 
     const handleDelete = () => {
-        axios.delete(`http://localhost:5000/api/courses/${id}`)
+
+        const encodedCredentials = btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`);
+        axios.delete(`http://localhost:5000/api/courses/${id}`, {
+            headers: {
+                'Authorization': `Basic ${encodedCredentials}`
+            }
+        })
             .then(() => {
                 // redirecting to the list of courses
             })
