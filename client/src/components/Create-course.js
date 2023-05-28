@@ -14,8 +14,9 @@ const CreateCourse = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        console.log(authenticatedUser);
 
-        const encodedCredentials = btoa(`${authenticatedUser.email}:${authenticatedUser.password}`);
+        const encodedCredentials = btoa(`${authenticatedUser.emailAdress}:${authenticatedUser.password}`);
 
         try {
             const response = await axios.post('http://localhost:5000/api/courses', {
