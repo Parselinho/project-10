@@ -22,7 +22,7 @@ const Header = () => {
                     <ul className="header--signedin">
                         <li>Welcome, {authenticatedUser.firstName} {authenticatedUser.lastName}!</li>
                         <li>
-                            <button onClick={handleSignOut}>Sign Out</button>
+                            <button className="button button-secondary" onClick={handleSignOut}>Sign Out</button>
                         </li>
                     </ul>
                 ) : (
