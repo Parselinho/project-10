@@ -1,4 +1,5 @@
-import { createContext, useState } from 'react';
+
+import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
 
 // Create the authentication context
@@ -8,6 +9,19 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   // State to store the authenticated user
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
+  const [lastVisitedPage, setLastVisitedPage] = useState(null);
+
+  // Check local storage for user credentials when context is first created
+  useEffect(() => {
+    const user = localStorage.getItem('authenticatedUser');
+    const lastPage = localStorage.getItem('lastVisitedPage');
+    if (user) {
+      setAuthenticatedUser(JSON.parse(user));
+    }
+    if (lastPage) {
+      setLastVisitedPage(lastPage);
+    }
+  }, []);
 
   // Function to sign in a user
   const signIn = async (emailAddress, password) => {
@@ -28,6 +42,9 @@ export const AuthProvider = ({ children }) => {
         // Set the authenticated user in the state
         setAuthenticatedUser(user);
 
+        // After successful sign in, save user credentials to local storage
+        localStorage.setItem('authenticatedUser', JSON.stringify(user));
+
         return true; // Return true to indicate successful sign-in
       }
     } catch (error) {
@@ -41,11 +58,14 @@ export const AuthProvider = ({ children }) => {
   // Function to sign out the user
   const signOut = () => {
     setAuthenticatedUser(null); // Clear the authenticated user from the state
+    localStorage.removeItem('authenticatedUser'); // Clear user credentials from local storage
+    setLastVisitedPage(null);
+    localStorage.removeItem('lastVisitedPage');
   };
 
   // Render the authentication provider with the provided children components
   return (
-    <AuthContext.Provider value={{ authenticatedUser, setAuthenticatedUser, signIn, signOut }}>
+    <AuthContext.Provider value={{ authenticatedUser, setAuthenticatedUser, signIn, signOut, lastVisitedPage, setLastVisitedPage }}>
       {children}
     </AuthContext.Provider>
   );
