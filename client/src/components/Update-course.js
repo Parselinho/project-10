@@ -19,18 +19,28 @@ const UpdateCourse = () => {
     const fetchCourse = async () => {
       try {
         const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
-        const course = response.data;
-        setTitle(course.title);
-        setDescription(course.description);
-        setEstimatedTime(course.estimatedTime || '');
-        setMaterialsNeeded(course.materialsNeeded || '');
+        if (!response.data) {
+          navigate('/notfound');
+        } else {
+          const course = response.data;
+          if (authenticatedUser.id !== course.userId) {
+            navigate('/forbidden');
+          } else {
+            setTitle(course.title);
+            setDescription(course.description);
+            setEstimatedTime(course.estimatedTime || '');
+            setMaterialsNeeded(course.materialsNeeded || '');
+          }
+        }
       } catch (error) {
         console.error("Error fetching course", error);
       }
     };
-
+  
     fetchCourse();
-  }, [id]);
+  }, [id, navigate, authenticatedUser]);
+
+  
 
   // Handle form submission
   const handleSubmit = async (event) => {
