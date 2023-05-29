@@ -1,29 +1,28 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
-import { AuthContext } from './context/AuthContext';
 
-const UserSignUp = () => {
+const UserSignUp = ({ onSignUp }) => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
 
-    // Get signIn and setAuthenticatedUser from AuthContext
-    const { signIn, setAuthenticatedUser } = useContext(AuthContext);
-
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/users', data);
-
-            if (response.status === 201) {
-                const user = await signIn(data.emailAddress, data.password);
-                setAuthenticatedUser(user); // set the user as authenticated
-                navigate('/courses');
+          const response = await axios.post('http://localhost:5000/api/users', data);
+      
+          if (response.status === 201) {
+            const signedIn = await onSignUp(data.emailAddress, data.password);
+    
+            if (signedIn) {
+              navigate('/courses');
             }
+          }
         } catch (error) {
-            console.error("Error creating user", error);
+          console.error("Error creating user", error);
         }
-    };
+      };
+
 
     const handleCancel = (event) => {
         event.preventDefault();
