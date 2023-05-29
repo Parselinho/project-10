@@ -13,9 +13,7 @@ const UserSignIn = () => {
         event.preventDefault();
         try {
             await signIn(emailAddress, password, navigate);
-            // No need to check if sign-in was successful here. Navigation is handled in the signIn function.
         } catch (error) {
-            // Handle error (e.g., show error message)
             console.error("Error signing in", error);
         }
     };
@@ -49,7 +47,7 @@ const UserSignIn = () => {
                             />
                         </div>
                         <div className="grid-100 pad-bottom">
-                            <button className="button" type="submit">Sign In</button>
+                            <Link to="/courses" className="button" type="submit">Sign In</Link>
                             <Link to="/courses" className="button button-secondary">Cancel</Link>
                         </div>
                     </form>
