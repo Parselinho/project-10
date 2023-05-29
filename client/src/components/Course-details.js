@@ -4,26 +4,32 @@ import axios from 'axios';
 import { AuthContext } from './context/AuthContext';
 import ReactMarkdown from 'react-markdown';
 
-
+// Course detail component
 function CourseDetail() {
+    // State variables
     const [course, setCourse] = useState(null);
     const [user, setUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    // Context and navigation hooks
     const { authenticatedUser } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    // Retrieve course ID from URL parameters
     const { id } = useParams();
 
+    // Fetch course and user data on component mount
     useEffect(() => {
+        // Create a cancel token source for cancelling requests
         const source = axios.CancelToken.source();
 
+        // Fetch course data
         axios.get(`http://localhost:5000/api/courses/${id}`, { cancelToken: source.token })
             .then(response => {
                 setCourse(response.data);
-                return axios.get(`http://localhost:5000/api/users/${response.data.userId}`,
-                    { cancelToken: source.token }
-                );
+                // Fetch user data for the course owner
+                return axios.get(`http://localhost:5000/api/users/${response.data.userId}`, { cancelToken: source.token });
             })
             .then(response => {
                 setUser(response.data);
@@ -36,52 +42,59 @@ function CourseDetail() {
                 }
             });
 
+        // Cleanup function to cancel requests on component unmount
         return () => {
             source.cancel();
         };
     }, [id]);
 
+    // Render loading message while data is being fetched
     if (isLoading) {
-        return <div>Loading...</div>
+        return <div>Loading...</div>;
     }
 
+    // Render error message if there was an error fetching data
     if (error) {
-        return <div>{error}</div>
+        return <div>{error}</div>;
     }
 
+    // Function to handle course deletion
     const handleDelete = () => {
         if (authenticatedUser) {
+            // Encode user credentials for authentication
             const encodedCredentials = btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`);
+            // Send delete request to the API with authentication headers
             axios.delete(`http://localhost:5000/api/courses/${id}`, {
                 headers: {
                     'Authorization': `Basic ${encodedCredentials}`
                 }
             })
                 .then(() => {
-                    navigate('/courses');
+                    navigate('/courses'); // Navigate to the courses list after successful deletion
                 })
                 .catch(error => {
                     console.log('Error deleting course:', error);
                     setError('There was a problem deleting the course. Please try again.');
                 });
         } else {
-            // handle the case when authenticatedUser is null.
-            navigate('/signin');
+            navigate('/signin'); // If user is not authenticated, redirect to sign-in page
         }
     };
 
-
+    // Render the materials list using ReactMarkdown for proper rendering
     const materials = course.materialsNeeded && course.materialsNeeded.trim()
         ? course.materialsNeeded.split('\n').filter(item => item.trim() !== '').map((item, index) =>
             <li key={index}><ReactMarkdown>{item}</ReactMarkdown></li>)
         : [];
 
+    // Render the course detail component
     return (
         <>
             <div>
                 <main>
                     <div className="actions--bar">
                         <div className="wrap">
+                            {/* Render action buttons for course owner */}
                             {
                                 authenticatedUser && authenticatedUser.id === user.id && (
                                     <>
@@ -90,6 +103,7 @@ function CourseDetail() {
                                     </>
                                 )
                             }
+                            {/* Return to courses list button */}
                             <Link className="button button-secondary" to="/courses">Return to List</Link>
                         </div>
                     </div>
