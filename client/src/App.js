@@ -11,12 +11,15 @@ import UserSignIn from "./components/Sign-in";
 import UserSignUp from "./components/Sign-up";
 import UserSignOut from "./components/SignOut";
 import PrivateRoute from "./components/PrivateRoute";
+import Error from "./components/Error";
+import Forbidden from "./components/Forbidden";
+import NotFound from "./components/NotFound";
 
 // Redirects the user to the "/courses" route when the app is loaded
 function RedirectToCourses() {
   const navigate = useNavigate();
 
-  useEffect(() => {
+  useEffect(() => { 
     navigate('/courses');
   }, [navigate]);
 
@@ -51,6 +54,9 @@ function App() {
           <Route path="/signin" element={<UserSignIn />} />
           <Route path="/signup" element={<UserSignUp onSignUp={signIn} />} />
           <Route path="/signout" element={<UserSignOut />} />
+          <Route path="/forbidden" element={<Forbidden />} />
+          <Route path="/error" element={<Error />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>
