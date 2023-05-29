@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 
+// UpdateCourse component
 const UpdateCourse = () => {
   const { authenticatedUser } = useContext(AuthContext); 
   const [title, setTitle] = useState('');
@@ -13,6 +14,7 @@ const UpdateCourse = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+  // Fetch the course data from the API
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -30,6 +32,7 @@ const UpdateCourse = () => {
     fetchCourse();
   }, [id]);
 
+  // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -41,9 +44,6 @@ const UpdateCourse = () => {
     if (errorMessages.length > 0) return;
 
     try {
-
-        console.log("Authenticated User: ", authenticatedUser);
-
       const response = await axios.put(`http://localhost:5000/api/courses/${id}`, {
         title,
         description,
@@ -63,11 +63,13 @@ const UpdateCourse = () => {
     }
   };
 
+  // Handle cancel button click
   const handleCancel = (event) => {
     event.preventDefault();
     navigate('/courses');
   };
 
+  // Render the UpdateCourse component
   return (
     <div>
       <h1>Update Course</h1>
