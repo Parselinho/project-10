@@ -72,7 +72,8 @@ function CourseDetail() {
 
 
     const materials = course.materialsNeeded && course.materialsNeeded.trim()
-        ? course.materialsNeeded.split('\n').filter(item => item.trim() !== '').map((item, index) => <li key={index}>{item}</li>)
+        ? course.materialsNeeded.split('\n').filter(item => item.trim() !== '').map((item, index) =>
+            <li key={index}><ReactMarkdown>{item}</ReactMarkdown></li>)
         : [];
 
     return (
@@ -108,11 +109,11 @@ function CourseDetail() {
                                     <p>{course.estimatedTime}</p>
 
                                     <div>
-    <h3 className="course--detail--title">Materials Needed</h3>
-    <ul className="course--detail--list">
-        <ReactMarkdown>{course.materialsNeeded}</ReactMarkdown>
-    </ul>
-</div>
+                                        <h3 className="course--detail--title">Materials Needed</h3>
+                                        <ul className="course--detail--list">
+                                            {materials}
+                                        </ul>
+                                    </div>
                                 </div>
                             </div>
                         </form>
