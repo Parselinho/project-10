@@ -96,8 +96,8 @@ const UpdateCourse = () => {
           Materials Needed:
           <textarea value={materialsNeeded} onChange={e => setMaterialsNeeded(e.target.value)} />
         </label>
-        <button type="submit">Update Course</button>
-        <button onClick={handleCancel}>Cancel</button>
+        <button className="button" type="submit">Update Course</button>
+        <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
       </form>
     </div>
   );
