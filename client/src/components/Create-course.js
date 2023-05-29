@@ -3,7 +3,9 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 
+// CreateCourse component
 const CreateCourse = () => {
+    // State variables
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [estimatedTime, setEstimatedTime] = useState('');
@@ -12,13 +14,16 @@ const CreateCourse = () => {
     const navigate = useNavigate();
     const { authenticatedUser } = useContext(AuthContext);
 
+    // Handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
         console.log(authenticatedUser);
 
+        // Encode user credentials for authentication
         const encodedCredentials = btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`);
 
         try {
+            // Send POST request to create a new course
             const response = await axios.post('http://localhost:5000/api/courses', {
                 title,
                 description,
@@ -31,7 +36,7 @@ const CreateCourse = () => {
             });
 
             if (response.status === 201) {
-                navigate('/courses'); 
+                navigate('/courses'); // Redirect to courses list on successful creation
             }
         } catch (error) {
             console.error("Error creating course", error);
@@ -41,17 +46,20 @@ const CreateCourse = () => {
         }
     };
 
+    // Handle cancellation
     const handleCancel = (event) => {
         event.preventDefault();
-        navigate('/courses'); 
+        navigate('/courses'); // Redirect to courses list on cancellation
     };
 
+    // Render the CreateCourse component
     return (
         <>
             <div>
                 <main>
                     <div className="wrap">
                         <h2>Create Course</h2>
+                        {/* Render validation errors, if any */}
                         {errors.length > 0 && (
                             <div className="validation--errors">
                                 <h3>Validation Errors</h3>
