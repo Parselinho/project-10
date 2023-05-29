@@ -28,7 +28,7 @@ const UserSignIn = () => {
 
     // Render the UserSignIn component
     return (
-        <div className="bounds">
+        <div className="bounds form--centered">
             <div className="grid-33 centered signin">
                 <h1>Sign In</h1>
                 <div>
