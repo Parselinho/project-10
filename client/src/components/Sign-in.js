@@ -2,25 +2,31 @@ import React, { useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 
+// UserSignIn component
 const UserSignIn = () => {
+    // State variables
     const [emailAddress, setEmailAddress] = useState('');
     const [password, setPassword] = useState('');
 
+    // Access signIn function from AuthContext
     const { signIn } = useContext(AuthContext);
     const navigate = useNavigate();
 
+    // Handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
+            // Call signIn function to authenticate user
             const signedIn = await signIn(emailAddress, password);
             if(signedIn) {
-                navigate('/courses');
+                navigate('/courses'); // Redirect to courses list on successful sign in
             }
         } catch (error) {
             console.error("Error signing in", error);
         }
     };
 
+    // Render the UserSignIn component
     return (
         <div className="bounds">
             <div className="grid-33 centered signin">
