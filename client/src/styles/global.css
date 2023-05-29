@@ -178,7 +178,7 @@ textarea {
     text-align: center;
     border-radius: .5rem;
     font-weight: bold;
-    transition: background 0.2s;
+    transition: background 0.3s ease;
 }
 .button:last-child {
     margin-bottom: 0;
