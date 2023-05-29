@@ -12,7 +12,10 @@ const UserSignIn = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            await signIn(emailAddress, password, navigate);
+            const signedIn = await signIn(emailAddress, password);
+            if(signedIn) {
+                navigate('/courses');
+            }
         } catch (error) {
             console.error("Error signing in", error);
         }
@@ -47,7 +50,7 @@ const UserSignIn = () => {
                             />
                         </div>
                         <div className="grid-100 pad-bottom">
-                            <Link to="/courses" className="button" type="submit">Sign In</Link>
+                            <button to="/courses" className="button" type="submit">Sign In</button>
                             <Link to="/courses" className="button button-secondary">Cancel</Link>
                         </div>
                     </form>
