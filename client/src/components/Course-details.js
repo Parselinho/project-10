@@ -23,13 +23,17 @@ function CourseDetail() {
     useEffect(() => {
         // Create a cancel token source for cancelling requests
         const source = axios.CancelToken.source();
-
+    
         // Fetch course data
         axios.get(`http://localhost:5000/api/courses/${id}`, { cancelToken: source.token })
             .then(response => {
-                setCourse(response.data);
-                // Fetch user data for the course owner
-                return axios.get(`http://localhost:5000/api/users/${response.data.userId}`, { cancelToken: source.token });
+                if (!response.data) {
+                    navigate('/notfound');
+                } else {
+                    setCourse(response.data);
+                    // Fetch user data for the course owner
+                    return axios.get(`http://localhost:5000/api/users/${response.data.userId}`, { cancelToken: source.token });
+                }
             })
             .then(response => {
                 setUser(response.data);
@@ -37,16 +41,21 @@ function CourseDetail() {
             })
             .catch(error => {
                 if (!axios.isCancel(error)) {
+                  if (error.response && error.response.status === 500) {
+                    // If the server returns a 500 status code, navigate to the error page
+                    navigate('/error');
+                  } else {
                     setError('Error fetching and parsing data');
                     setIsLoading(false);
+                  }
                 }
-            });
-
+              });
+    
         // Cleanup function to cancel requests on component unmount
         return () => {
             source.cancel();
         };
-    }, [id]);
+    }, [id, navigate]);
 
     // Render loading message while data is being fetched
     if (isLoading) {
