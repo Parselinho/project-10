@@ -11,7 +11,7 @@ import UserSignIn from "./components/Sign-in";
 import UserSignUp from "./components/Sign-up";
 import UserSignOut from "./components/SignOut";
 import PrivateRoute from "./components/PrivateRoute";
-import Error from "./components/Error";
+import Error from "./components/ErrorPage";
 import Forbidden from "./components/Forbidden";
 import NotFound from "./components/NotFound";
 
