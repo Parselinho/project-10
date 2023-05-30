@@ -32,7 +32,7 @@ function CourseDetail() {
                 } else {
                     setCourse(response.data);
                     // Fetch user data for the course owner
-                    return axios.get(`http://localhost:5000/api/users/${response.data.userId}`, { cancelToken: source.token });
+                    return axios.get(`http://localhost:5000/api/users/${response.data.userId}`, { cancelToken: source.token }); 
                 }
             })
             .then(response => {
@@ -51,7 +51,7 @@ function CourseDetail() {
                 }
               });
     
-        // Cleanup function to cancel requests on component unmount
+        // Cleanup function to cancel requests on component 
         return () => {
             source.cancel();
         };
