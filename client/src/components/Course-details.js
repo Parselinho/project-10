@@ -22,10 +22,10 @@ function CourseDetail() {
     // Fetch course and user data on component mount
     useEffect(() => {
         // Create a cancel token source for cancelling requests
-        const source = axios.CancelToken.source();
+        const source = axios.CancelToken.source(); 
     
         // Fetch course data
-        axios.get(`http://localhost:5000/api/courses/${id}`, { cancelToken: source.token })
+        axios.get(`http://localhost:5000/api/courses/${id}`, { cancelToken: source.token }) // Pass the cancel token to the request
             .then(response => {
                 if (!response.data) {
                     navigate('/notfound');
