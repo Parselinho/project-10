@@ -118,7 +118,7 @@ function CourseDetail() {
                     </div>
 
                     <div className="wrap">
-                        <h2>Course Detail</h2>
+                        <h2 className="bold">Course Detail</h2>
                         <form>
                             <div className="main--flex">
                                 <div>
