@@ -41,7 +41,6 @@ a:hover {
     max-width: 1250px;
     margin: 0 auto;
     padding: 0 1rem;
-    background-color: #fff; /* Wrap sections with white */
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     border-radius: 8px; /* Slightly rounded corners */
     overflow: hidden; /* To respect the border radius */
