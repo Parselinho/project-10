@@ -1,9 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 
 // UserSignIn component
 const UserSignIn = () => {
+    const authenticatedUser = useContext(AuthContext);
   // State variables
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +14,7 @@ const UserSignIn = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  let { from } = location.state || { from: { pathname: "/courses" } };
+  let { from } = location.state || { from: { pathname: "/courses" } }; 
 
   // Handle form submission
   const handleSubmit = async (event) => {
@@ -21,13 +22,16 @@ const UserSignIn = () => {
     try {
       const signedIn = await signIn(emailAddress, password);
       if(signedIn) {
-        navigate(from);
+        navigate(from); //
       }
     } catch (error) {
       console.error("Error signing in", error);
     }
   };
 
+  useEffect(() => {
+    console.log(authenticatedUser);
+  } ,[])
   // Render the UserSignIn component
   return (
     <div className="bounds form--centered">
