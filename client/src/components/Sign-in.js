@@ -32,7 +32,7 @@ const UserSignIn = () => {
   return (
     <div className="bounds form--centered">
       <div className="grid-33 centered signin">
-        <h1>Sign In</h1>
+        <h1 className='bold'>Sign In</h1>
         <div>
           <form onSubmit={handleSubmit}>
             <div>
