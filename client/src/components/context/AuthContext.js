@@ -1,6 +1,7 @@
 
 import { createContext, useState, useEffect } from 'react';
 import axios from 'axios';
+// import { set } from 'react-hook-form';
 
 // Create the authentication context
 export const AuthContext = createContext();
@@ -10,6 +11,7 @@ export const AuthProvider = ({ children }) => {
   // State to store the authenticated user
   const [authenticatedUser, setAuthenticatedUser] = useState(null);
   const [lastVisitedPage, setLastVisitedPage] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   // Check local storage for user credentials when context is first created
   useEffect(() => {
@@ -21,10 +23,12 @@ export const AuthProvider = ({ children }) => {
     if (lastPage) {
       setLastVisitedPage(lastPage);
     }
+    setLoading(false);
   }, []);
 
   // Function to sign in a user
   const signIn = async (emailAddress, password) => {
+    setLoading(true);
     try {
       // Encode the user credentials
       const encodedCredentials = btoa(`${emailAddress}:${password}`);
@@ -52,6 +56,7 @@ export const AuthProvider = ({ children }) => {
       throw error; // Throw the error for error handling
     }
 
+    setLoading(false);
     return false; // Return false if sign-in is unsuccessful
   };
 
@@ -61,11 +66,12 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem('authenticatedUser'); // Clear user credentials from local storage
     setLastVisitedPage(null);
     localStorage.removeItem('lastVisitedPage');
+    setLoading(false);
   };
 
   // Render the authentication provider with the provided children components
   return (
-    <AuthContext.Provider value={{ authenticatedUser, setAuthenticatedUser, signIn, signOut, lastVisitedPage, setLastVisitedPage }}>
+    <AuthContext.Provider value={{ authenticatedUser, setAuthenticatedUser, signIn, signOut, lastVisitedPage, setLastVisitedPage, loading }}>
       {children}
     </AuthContext.Provider>
   );
