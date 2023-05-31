@@ -17,11 +17,11 @@ const UpdateCourse = () => {
   useEffect(() => {
     const fetchCourse = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
+          const response = await axios.get(`http://localhost:5000/api/courses/${id}`); 
           const course = response.data;
       
           if (course) {
-            if (authenticatedUser.id !== course.userId) {
+            if (authenticatedUser.id !== course.userId) { // If the authenticated user does not own the course, redirect to forbidden page
               navigate('/forbidden');
             } else {
               setTitle(course.title);
@@ -47,7 +47,7 @@ const UpdateCourse = () => {
       };
   
     fetchCourse();
-  }, [id, navigate, authenticatedUser]);
+  }, [id, navigate, authenticatedUser]); // Fetch course data when the component mounts and when the id parameter changes
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -62,7 +62,7 @@ const UpdateCourse = () => {
     try {
       const response = await axios.put(`http://localhost:5000/api/courses/${id}`, course, {
         headers: {
-          'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}`
+          'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}` // Encode user credentials for authentication
         }
       });
 
