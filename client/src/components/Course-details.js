@@ -45,7 +45,7 @@ function CourseDetail() {
                     // If the server returns a 500 status code, navigate to the error page
                     navigate('/error');
                   } else {
-                    setError('Error fetching and parsing data');
+                    navigate('/notfound') // If the server returns a 404 status code, navigate to the not found page
                     setIsLoading(false);
                   }
                 }
