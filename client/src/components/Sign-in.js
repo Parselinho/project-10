@@ -8,6 +8,7 @@ const UserSignIn = () => {
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
 
+
   // Access signIn from AuthContext
   const { signIn } = useContext(AuthContext);
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ const UserSignIn = () => {
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
+    
     try {
       const signedIn = await signIn(emailAddress, password);
       if(signedIn) {
