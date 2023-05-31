@@ -3,7 +3,6 @@ import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 
-// UpdateCourse component
 const UpdateCourse = () => {
   const { authenticatedUser } = useContext(AuthContext); 
   const [title, setTitle] = useState('');
@@ -17,11 +16,11 @@ const UpdateCourse = () => {
   useEffect(() => {
     const fetchCourse = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/courses/${id}`); 
+          const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
           const course = response.data;
       
           if (course) {
-            if (authenticatedUser.id !== course.userId) { // If the authenticated user does not own the course, redirect to forbidden page
+            if (authenticatedUser.id !== course.userId) {
               navigate('/forbidden');
             } else {
               setTitle(course.title);
@@ -36,10 +35,10 @@ const UpdateCourse = () => {
           if (error.response && error.response.status === 404) {
             navigate('/notfound');
           }
-            else if (error.response && error.response.status === 403) {
-                navigate('/forbidden');
+          else if (error.response && error.response.status === 403) {
+              navigate('/forbidden');
           } else if (error.response && error.response.status === 500) {
-                navigate('/error');
+              navigate('/error');
           } else {
             console.error("Error fetching course", error);
           }
@@ -47,34 +46,43 @@ const UpdateCourse = () => {
       };
   
     fetchCourse();
-  }, [id, navigate, authenticatedUser]); // Fetch course data when the component mounts and when the id parameter changes
+  }, [id, navigate, authenticatedUser]);
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const course = {
-      title,
-      description,
-      estimatedTime,
-      materialsNeeded
-    };
+    const errorMessages = [];
+
+    if (!title) errorMessages.push('Title is required.');
+    if (!description) errorMessages.push('Description is required.');
+
+    setErrors(errorMessages);
+
+    if (errorMessages.length > 0) return;
 
     try {
-      const response = await axios.put(`http://localhost:5000/api/courses/${id}`, course, {
+      const response = await axios.put(`http://localhost:5000/api/courses/${id}`, {
+        title,
+        description,
+        estimatedTime,
+        materialsNeeded
+      }, {
         headers: {
-          'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}` // Encode user credentials for authentication
+          'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}`
         }
       });
 
       if (response.status === 204) {
         navigate('/courses');
-      } else if (response.data && response.data.errors) {
-        setErrors(response.data.errors);
       }
     } catch (error) {
       console.error("Error updating course", error);
-      if (error.response && error.response.status === 500) {
-        navigate('/error');
+      if (error.response) {
+        if (error.response.status === 500) {
+          navigate('/error'); 
+        } else if (error.response.data.errors) {
+          setErrors(error.response.data.errors.map(error => error.msg));
+        }
       }
     }
   };
