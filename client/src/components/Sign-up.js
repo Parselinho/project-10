@@ -11,11 +11,13 @@ const UserSignUp = () => {
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/users', data); // Send POST request to create a new user
+            const response = await axios.post('http://localhost:5000/api/users', data);
+      
             if (response.status === 201) {
-                const signedIn = await signIn(data.emailAddress, data.password); // Sign in the new user
+                const signedIn = await signIn(data.emailAddress, data.password); // Sign in the user
+        
                 if (signedIn) {
-                    navigate('/courses');
+                    navigate('/courses'); 
                 }
             }
         } catch (error) {
@@ -23,11 +25,11 @@ const UserSignUp = () => {
             if (error.response) {
                 if (error.response.status === 500) {
                     navigate('/error'); 
-                } else if (error.response.data.errors) {
-                    error.response.data.errors.forEach(error => { // Loop through validation errors and set error messages
-                        setError(error.param, { // Set the error for each field
-                            type: "manual", // Manually set the error message
-                            message: error.msg // Set the error message to the message returned from the API
+                } else if (error.response.data.errors) { // If the server returns validation errors, display them
+                    error.response.data.errors.forEach(error => { // Loop through the errors and set them on the form
+                        setError(error.param, { // Use setError to set errors on the form
+                            type: "manual", // Manually set the error type so that we can clear it when the error is resolved
+                            message: error.msg // Set the error message
                         });
                     });
                 }
@@ -46,19 +48,19 @@ const UserSignUp = () => {
                 <h2 className='bold'>Sign Up</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <label htmlFor="firstName">First Name</label>
-                    <input {...register("firstName", { required: true })} id="firstName" name="firstName" type="text" />
+                    <input {...register("firstName", { required: 'First name is required.' })} id="firstName" name="firstName" type="text" />
                     {errors.firstName && <span>{errors.firstName.message}</span>} 
 
                     <label htmlFor="lastName">Last Name</label>
-                    <input {...register("lastName", { required: true })} id="lastName" name="lastName" type="text" />
+                    <input {...register("lastName", { required: 'Last name is required.' })} id="lastName" name="lastName" type="text" />
                     {errors.lastName && <span>{errors.lastName.message}</span>}
 
                     <label htmlFor="emailAddress">Email Address</label>
-                    <input {...register("emailAddress", { required: true })} id="emailAddress" name="emailAddress" type="email" />
+                    <input {...register("emailAddress", { required: 'Email address is required.' })} id="emailAddress" name="emailAddress" type="email" />
                     {errors.emailAddress && <span>{errors.emailAddress.message}</span>}
 
                     <label htmlFor="password">Password</label>
-                    <input {...register("password", { required: true })} id="password" name="password" type="password" />
+                    <input {...register("password", { required: 'Password is required.' })} id="password" name="password" type="password" />
                     {errors.password && <span>{errors.password.message}</span>}
 
                     <button className="button" type="submit">Sign Up</button>
