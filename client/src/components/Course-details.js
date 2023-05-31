@@ -82,8 +82,11 @@ function CourseDetail() {
                     navigate('/courses'); // Navigate to the courses list after successful deletion
                 })
                 .catch(error => {
-                    console.log('Error deleting course:', error);
-                    setError('There was a problem deleting the course. Please try again.');
+                    if (error.response && error.response.status === 500) {
+                        navigate('/error')
+                    } else {
+                        setError('There was a problem deleting the course. Please try again.');
+                    }
                 });
         } else {
             navigate('/signin'); // If user is not authenticated, redirect to sign-in page
@@ -91,8 +94,8 @@ function CourseDetail() {
     };
 
     // Render the materials list using ReactMarkdown for proper rendering
-    const materials = course.materialsNeeded && course.materialsNeeded.trim()
-        ? course.materialsNeeded.split('\n').filter(item => item.trim() !== '').map((item, index) =>
+    const materials = course.materialsNeeded && course.materialsNeeded.trim() // Check if materialsNeeded is not null or empty
+        ? course.materialsNeeded.split('\n').filter(item => item.trim() !== '').map((item, index) => // Split the string into an array of strings and filter out empty strings
             <li key={index}><ReactMarkdown>{item}</ReactMarkdown></li>)
         : [];
 
