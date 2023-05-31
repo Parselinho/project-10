@@ -98,7 +98,7 @@ const UpdateCourse = () => {
       {errors.length > 0 && (
         <div>
           <h2>Validation Errors</h2>
-          <ul>
+          <ul className='marginBottom'>
             {errors.map((error, index) => <li key={index}>{error}</li>)}
           </ul>
         </div>
