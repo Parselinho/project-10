@@ -12,7 +12,6 @@ const PrivateRoute = ({ children }) => {
   // Check if user is authenticated on component mount
   useEffect(() => {
     if (!loading) {
-        console.log(authenticatedUser);
         if (!authenticatedUser) {
             setLastVisitedPage(location.pathname);
             navigate('/signin', { state: { from: location.pathname } });
