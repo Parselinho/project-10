@@ -80,12 +80,16 @@ const UpdateCourse = () => {
       }
     } catch (error) {
       console.error("Error updating course", error);
-      if (error.response && error.response.data.errors) {
-        setErrors(error.response.data.errors);
+      if (error.response) {
+        if (error.response.status === 500) {
+          navigate('/error'); // Redirect to error route on 500 status code
+        } else if (error.response.data.errors) {
+          setErrors(error.response.data.errors);
+        }
       }
     }
   };
-
+  
   // Handle cancel button click
   const handleCancel = (event) => {
     event.preventDefault();
