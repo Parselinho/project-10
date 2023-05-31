@@ -25,7 +25,9 @@ p {
     hyphens: auto;
     color: #555; 
 }
-
+.marginBottom {
+    margin-bottom: 1em;
+}
 a {
     color: #eeeeee;
     text-decoration: none;
@@ -104,7 +106,9 @@ header nav a:hover {
     margin-bottom: 1.5rem;
     display: block;
 }
-
+.course--description p {
+    margin-bottom: 20px;
+}
 .course--label {
     color: #fff;
     font-size: 0.9rem;
