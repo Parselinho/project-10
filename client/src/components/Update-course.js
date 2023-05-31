@@ -95,7 +95,7 @@ const UpdateCourse = () => {
   // Render the UpdateCourse component
   return (
     <div>
-      <h1>Update Course</h1>
+      <h1 className='bold'>Update Course</h1>
       {errors.length > 0 && (
         <div>
           <h2>Validation Errors</h2>
