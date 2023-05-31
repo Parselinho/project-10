@@ -48,6 +48,7 @@ export const AuthProvider = ({ children }) => {
 
         // After successful sign in, save user credentials to local storage
         localStorage.setItem('authenticatedUser', JSON.stringify(user));
+        setLoading(false);
 
         return true; // Return true to indicate successful sign-in
       }
