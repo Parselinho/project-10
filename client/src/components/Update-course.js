@@ -39,6 +39,8 @@ const UpdateCourse = () => {
           }
             else if (error.response && error.response.status === 403) {
                 navigate('/forbidden');
+          } else if (error.response && error.response.status === 500) {
+                navigate('/error');
           } else {
             console.error("Error fetching course", error);
           }
@@ -78,6 +80,9 @@ const UpdateCourse = () => {
       }
     } catch (error) {
       console.error("Error updating course", error);
+      if (error.response && error.response.data.errors) {
+        setErrors(error.response.data.errors);
+      }
     }
   };
 
