@@ -14,6 +14,7 @@ const UpdateCourse = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
+
   // Fetch the course data from the API
   useEffect(() => {
     const fetchCourse = async () => {
