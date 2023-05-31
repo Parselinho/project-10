@@ -40,8 +40,12 @@ const CreateCourse = () => {
             }
         } catch (error) {
             console.error("Error creating course", error);
-            if (error.response && error.response.data.errors) {
-                setErrors(error.response.data.errors);
+            if (error.response) {
+                if (error.response.status === 500) {
+                    navigate('/error'); // Navigate to error page if server returns a 500 status code
+                } else if (error.response.data.errors) {
+                    setErrors(error.response.data.errors);
+                }
             }
         }
     };
