@@ -1,10 +1,9 @@
-import React, { useState, useContext, useEffect } from 'react';
+import React, { useState, useContext } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { AuthContext } from './context/AuthContext';
 
 // UserSignIn component
 const UserSignIn = () => {
-    const authenticatedUser = useContext(AuthContext);
   // State variables
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
@@ -29,9 +28,6 @@ const UserSignIn = () => {
     }
   };
 
-  useEffect(() => {
-    console.log(authenticatedUser);
-  } ,[])
   // Render the UserSignIn component
   return (
     <div className="bounds form--centered">
