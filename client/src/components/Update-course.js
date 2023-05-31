@@ -18,23 +18,24 @@ const UpdateCourse = () => {
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
-        if (!response.data) {
-          navigate('/notfound');
-        } else {
-          const course = response.data;
-          if (authenticatedUser.id !== course.userId) {
+        const response = await axios.get(`http://localhost:5000/api/courses/${id}`); 
+        const course = response.data;
+
+        if (authenticatedUser.id !== course.userId) {
             navigate('/forbidden');
-          } else {
+        } else {
             setTitle(course.title);
             setDescription(course.description);
             setEstimatedTime(course.estimatedTime || '');
             setMaterialsNeeded(course.materialsNeeded || '');
-          }
+            }
+        } catch (error) {
+            if (error.response && error.response.status === 404) {
+                navigate('/notfound');
+            } else {
+                console.error("Error fetching course", error);
+            }
         }
-      } catch (error) {
-        console.error("Error fetching course", error);
-      }
     };
   
     fetchCourse();
