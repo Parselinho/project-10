@@ -12,8 +12,11 @@ const PrivateRoute = ({ children }) => {
   // Check if user is authenticated on component mount
   useEffect(() => {
     if (!authenticatedUser) {
-      setLastVisitedPage(location.pathname);
-      navigate('/signin', { state: { from: location.pathname } });
+        if (location.pathname !== '/forbidden' && location.pathname !== '/notfound') {
+            setLastVisitedPage(location.pathname);
+
+        }
+        navigate('/signin', { state: { from: location.pathname } });
     }
   }, [authenticatedUser, navigate, setLastVisitedPage, location]);
 
