@@ -7,7 +7,7 @@ const UserSignIn = () => {
   // State variables
   const [emailAddress, setEmailAddress] = useState('');
   const [password, setPassword] = useState('');
-
+  const [errors, setErrors] = useState('');  // New state variable for errors
 
   // Access signIn from AuthContext
   const { signIn } = useContext(AuthContext);
@@ -23,10 +23,16 @@ const UserSignIn = () => {
     try {
       const signedIn = await signIn(emailAddress, password);
       if(signedIn) {
-        navigate(from); //
+        navigate(from);
       }
     } catch (error) {
-      console.error("Error signing in", error);
+      if (error.response && error.response.status === 500) {
+        navigate('/error');
+      } else if (error.response && error.response.status === 401) {
+        setErrors('Invalid email or password');
+      } else {
+        console.error("Error signing in", error);
+      }
     }
   };
 
@@ -35,6 +41,7 @@ const UserSignIn = () => {
     <div className="bounds form--centered">
       <div className="grid-33 centered signin">
         <h1 className='bold'>Sign In</h1>
+        {errors && <div className="validation--errors">{errors}</div>} {/* Display errors if any */}
         <div>
           <form onSubmit={handleSubmit}>
             <div>
