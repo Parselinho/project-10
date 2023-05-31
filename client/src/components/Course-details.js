@@ -121,10 +121,10 @@ function CourseDetail() {
                         <h2 className="bold">Course Detail</h2>
                         <form>
                             <div className="main--flex">
-                                <div>
+                                <div className='course--description'>
                                     <h3 className="course--detail--title">Course</h3>
                                     <h4 className="course--name">{course.title}</h4>
-                                    <p>By {user && `${user.firstName} ${user.lastName}`}</p>
+                                    <p className='marginBottom'>By {user && `${user.firstName} ${user.lastName}`}</p>
                                     <ReactMarkdown>{course.description}</ReactMarkdown>
                                 </div>
                                 <div>
