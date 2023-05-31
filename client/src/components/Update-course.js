@@ -17,29 +17,33 @@ const UpdateCourse = () => {
   // Fetch the course data from the API
   useEffect(() => {
     const fetchCourse = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/api/courses/${id}`); 
-        const course = response.data;
-
-        if (authenticatedUser.id !== course.userId) {
-            navigate('/forbidden');
-        } else {
-            setTitle(course.title);
-            setDescription(course.description);
-            setEstimatedTime(course.estimatedTime || '');
-            setMaterialsNeeded(course.materialsNeeded || '');
-            }
-        } catch (error) {
-            if (error.response && error.response.status === 404) {
-                navigate('/notfound');
+        try {
+          const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
+          const course = response.data;
+      
+          if (course) {
+            if (authenticatedUser.id !== course.userId) {
+              navigate('/forbidden');
             } else {
-                console.error("Error fetching course", error);
+              setTitle(course.title);
+              setDescription(course.description);
+              setEstimatedTime(course.estimatedTime || '');
+              setMaterialsNeeded(course.materialsNeeded || '');
             }
+          } else {
+            navigate('/notfound');
+          }
+        } catch (error) {
+          if (error.response && error.response.status === 404) {
+            navigate('/notfound');
+          } else {
+            console.error("Error fetching course", error);
+          }
         }
-    };
+      };
   
     fetchCourse();
-  }, [id, navigate, authenticatedUser]);
+  }, [id, navigate, authenticatedUser.id]);
 
   
 
