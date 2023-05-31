@@ -22,20 +22,16 @@ const UpdateCourse = () => {
           const course = response.data;
       
           if (course) {
-            if (authenticatedUser.id !== course.userId) {
-              navigate('/forbidden');
-            } else {
-              setTitle(course.title);
-              setDescription(course.description);
-              setEstimatedTime(course.estimatedTime || '');
-              setMaterialsNeeded(course.materialsNeeded || '');
-            }
-          } else {
-            navigate('/notfound');
-          }
+            setTitle(course.title);
+            setDescription(course.description);
+            setEstimatedTime(course.estimatedTime || '');
+            setMaterialsNeeded(course.materialsNeeded || '');
+          } 
         } catch (error) {
           if (error.response && error.response.status === 404) {
             navigate('/notfound');
+          } else if (error.response && error.response.status === 403) {
+            navigate('/forbidden');
           } else {
             console.error("Error fetching course", error);
           }
@@ -43,9 +39,7 @@ const UpdateCourse = () => {
       };
   
     fetchCourse();
-  }, [id, navigate, authenticatedUser.id]);
-
-  
+  }, [id, navigate]);
 
   // Handle form submission
   const handleSubmit = async (event) => {
@@ -113,8 +107,8 @@ const UpdateCourse = () => {
           Materials Needed:
           <textarea value={materialsNeeded} onChange={e => setMaterialsNeeded(e.target.value)} />
         </label>
-        <button className="button" type="submit">Update Course</button>
-        <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
+        <button type="submit">Update Course</button>
+        <button onClick={handleCancel}>Cancel</button>
       </form>
     </div>
   );
