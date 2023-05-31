@@ -29,14 +29,18 @@ const UserSignUp = () => {
             }
         } catch (error) {
             console.error("Error creating user", error);
-            if (error.response && error.response.data.errors) {
-                // Set errors in the form
-                error.response.data.errors.forEach(error => {
-                    setError(error.param, {
-                        type: "manual",
-                        message: error.msg
+            if (error.response) {
+                if (error.response.status === 500) {
+                    navigate('/error'); // Redirect to error route on 500 status code
+                } else if (error.response.data.errors) {
+                    // Set errors in the form
+                    error.response.data.errors.forEach(error => {
+                        setError(error.param, {
+                            type: "manual",
+                            message: error.msg
+                        });
                     });
-                });
+                }
             }
         }
     };
