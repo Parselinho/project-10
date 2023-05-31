@@ -70,6 +70,7 @@ function CourseDetail() {
     // Function to handle course deletion
     const handleDelete = () => {
         if (authenticatedUser) {
+            console.log(authenticatedUser);
             // Encode user credentials for authentication
             const encodedCredentials = btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`);
             // Send delete request to the API with authentication headers
