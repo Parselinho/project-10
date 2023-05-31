@@ -5,21 +5,23 @@ import { AuthContext } from './context/AuthContext';
 // PrivateRoute component
 const PrivateRoute = ({ children }) => {
   // Access authenticatedUser and setLastVisitedPage from AuthContext
-  const { authenticatedUser, setLastVisitedPage } = useContext(AuthContext);
+  const { authenticatedUser, setLastVisitedPage, loading } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation(); 
 
   // Check if user is authenticated on component mount
   useEffect(() => {
-    console.log(authenticatedUser);
-    if (!authenticatedUser) {
+    if (!loading) {
+        console.log(authenticatedUser);
+        if (!authenticatedUser) {
             setLastVisitedPage(location.pathname);
-        navigate('/signin', { state: { from: location.pathname } });
+            navigate('/signin', { state: { from: location.pathname } });
     }
-  }, [authenticatedUser, navigate, setLastVisitedPage, location]);
+    }
+  }, [authenticatedUser, navigate, setLastVisitedPage, location, loading]);
 
   // Render the children components if user is authenticated, otherwise render null
-  return authenticatedUser ? children : null;
+  return (!loading && authenticatedUser) ? children : null;
 };
 
 export default PrivateRoute;
