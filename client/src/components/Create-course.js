@@ -58,7 +58,7 @@ const CreateCourse = () => {
             <div>
                 <main>
                     <div className="wrap">
-                        <h2>Create Course</h2>
+                        <h2 className='bold'>Create Course</h2>
                         {/* Render validation errors, if any */}
                         {errors.length > 0 && (
                             <div className="validation--errors">
@@ -79,7 +79,7 @@ const CreateCourse = () => {
                                         value={title}
                                         onChange={(e) => setTitle(e.target.value)} />
 
-                                    <p>By Joe Smith</p>
+                                    <p>By {authenticatedUser.firstName} {authenticatedUser.lastName}</p>
 
                                     <label htmlFor="courseDescription">Course Description</label>
                                     <textarea
