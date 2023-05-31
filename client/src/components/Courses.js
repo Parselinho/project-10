@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 // Courses component
@@ -9,6 +9,9 @@ function Courses() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    // Hook for navigation
+    const navigate = useNavigate();
+
     // Fetch courses data on component mount
     useEffect(() => {
         axios.get('http://localhost:5000/api/courses')
@@ -17,10 +20,14 @@ function Courses() {
                 setIsLoading(false);
             })
             .catch(error => {
-                setError('Error fetching and parsing data');
-                setIsLoading(false);
+                if (error.response && error.response.status === 500) {
+                    navigate('/error');
+                } else {
+                    setError('Error fetching and parsing data');
+                    setIsLoading(false);
+                }
             });
-    }, []);
+    }, [navigate]);
 
     // Render loading message while data is being fetched
     if (isLoading) {
