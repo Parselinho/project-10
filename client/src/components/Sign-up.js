@@ -51,7 +51,7 @@ const UserSignUp = () => {
     return (
         <>
             <div className="form--centered">
-                <h2>Sign Up</h2>
+                <h2 className='bold'>Sign Up</h2>
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <label htmlFor="firstName">First Name</label>
                     <input {...register("firstName", { required: true })} id="firstName" name="firstName" type="text" />
