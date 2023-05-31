@@ -46,7 +46,7 @@ const UpdateCourse = () => {
       };
   
     fetchCourse();
-  }, [id, navigate, authenticatedUser.id]);
+  }, [id, navigate, authenticatedUser]);
 
   
 
