@@ -28,6 +28,9 @@ p {
 .marginBottom {
     margin-bottom: 1em;
 }
+.marginBottom > li {
+    padding: 3px;
+}
 a {
     color: #eeeeee;
     text-decoration: none;
