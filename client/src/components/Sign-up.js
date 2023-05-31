@@ -7,7 +7,7 @@ import { AuthContext } from './context/AuthContext';
 // UserSignUp component
 const UserSignUp = () => { 
     // React Hook Form
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm();
     const navigate = useNavigate();
 
     // Access signIn function from AuthContext
@@ -29,6 +29,15 @@ const UserSignUp = () => {
             }
         } catch (error) {
             console.error("Error creating user", error);
+            if (error.response && error.response.data.errors) {
+                // Set errors in the form
+                error.response.data.errors.forEach(error => {
+                    setError(error.param, {
+                        type: "manual",
+                        message: error.msg
+                    });
+                });
+            }
         }
     };
 
