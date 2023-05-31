@@ -98,7 +98,9 @@ header nav a:hover {
     margin-left: 0.5rem;
     
 }
-
+.black {
+    color: black;
+}
 .course--module {
     background: #7c689b;
     border-radius: 0.5rem;
