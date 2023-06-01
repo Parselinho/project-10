@@ -21,7 +21,7 @@ function RedirectToCourses() {
 
   useEffect(() => { 
     navigate('/courses');
-  }, [navigate]);
+  }, [navigate]); // Redirect to the "/courses" route when the component mounts
 
   return null;
 }
