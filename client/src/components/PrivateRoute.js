@@ -13,11 +13,11 @@ const PrivateRoute = ({ children }) => {
   useEffect(() => {
     if (!loading) {
         if (!authenticatedUser) {
-            setLastVisitedPage(location.pathname);
-            navigate('/signin', { state: { from: location.pathname } });
+            setLastVisitedPage(location.pathname); // Set the last visited page to the current page
+            navigate('/signin', { state: { from: location.pathname } }); 
     }
     }
-  }, [authenticatedUser, navigate, setLastVisitedPage, location, loading]);
+  }, [authenticatedUser, navigate, setLastVisitedPage, location, loading]); // Check if user is authenticated when the component mounts and when the authenticatedUser state changes
 
   // Render the children components if user is authenticated, otherwise render null
   return (!loading && authenticatedUser) ? children : null;
