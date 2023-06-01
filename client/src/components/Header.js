@@ -11,7 +11,7 @@ const Header = () => {
     // Handle sign out
     const handleSignOut = () => {
         signOut();
-        navigate('/courses'); // Redirect to courses list after sign out
+        navigate('/courses'); 
     };
 
     // Render the Header component
