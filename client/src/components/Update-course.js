@@ -46,20 +46,20 @@ const UpdateCourse = () => {
       };
   
     fetchCourse();
-  }, [id, navigate, authenticatedUser]); // Fetch course data when the component mounts and when the id parameter changes
+  }, [id, navigate, authenticatedUser]); 
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-        const response = await axios.put(`http://localhost:5000/api/courses/${id}`, { // Send PUT request to update course
+        const response = await axios.put(`http://localhost:5000/api/courses/${id}`, { 
             title,
             description,
             estimatedTime,
             materialsNeeded
         }, {
             headers: {
-                'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}` // Encode user credentials for authentication
+                'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}`
             }
         });
 
@@ -69,10 +69,10 @@ const UpdateCourse = () => {
     } catch (error) {
         console.error("Error updating course", error);
         if (error.response) {
-            if (error.response.status === 500) {
+            if (error.response.status === 400) { // If the server returns a 400 status code, handle validation errors
+                setErrors(error.response.data.errors);
+            } else if (error.response.status === 500) {
                 navigate('/error'); 
-            } else if (error.response.data.errors) { // If the server returns validation errors, set the errors state
-                setErrors(error.response.data.errors); // Set the errors state
             }
         }
     }
@@ -95,24 +95,20 @@ const UpdateCourse = () => {
         </div>
       )}
       <form onSubmit={handleSubmit}>
-        <label>
-          Title:
-          <input type="text" value={title} onChange={e => setTitle(e.target.value)} />
-        </label>
-        <label>
-          Description:
-          <textarea value={description} onChange={e => setDescription(e.target.value)} />
-        </label>
-        <label>
-          Estimated Time:
-          <input type="text" value={estimatedTime} onChange={e => setEstimatedTime(e.target.value)} />
-        </label>
-        <label>
-          Materials Needed:
-          <textarea value={materialsNeeded} onChange={e => setMaterialsNeeded(e.target.value)} />
-        </label>
-        <button className="button" type="submit">Update Course</button>
-        <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
+        <label htmlFor="title">Course Title:</label>
+        <input id="title" name="title" type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+
+        <label htmlFor="description">Course Description:</label>
+        <textarea id="description" name="description" type="text" value={description} onChange={(e) => setDescription(e.target.value)} />
+
+        <label htmlFor="estimatedTime">Estimated Time:</label>
+        <input id="estimatedTime" name="estimatedTime" type="text" value={estimatedTime} onChange={(e) => setEstimatedTime(e.target.value)} />
+
+        <label htmlFor="materialsNeeded">Materials Needed:</label>
+        <textarea id="materialsNeeded" name="materialsNeeded" type="text" value={materialsNeeded} onChange={(e) => setMaterialsNeeded(e.target.value)} />
+
+        <button type="submit">Update Course</button>
+        <button onClick={handleCancel}>Cancel</button>
       </form>
     </div>
   );
