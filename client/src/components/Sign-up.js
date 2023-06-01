@@ -25,11 +25,11 @@ const UserSignUp = () => {
             if (error.response) {
                 if (error.response.status === 500) {
                     navigate('/error'); 
-                } else if (error.response.data.errors) { // If the server returns a 400 status code, set error messages for each field
-                    error.response.data.errors.forEach(error => { // Loop through errors and set error messages for each field
-                        setError(error.param, { // Set error messages for each field
-                            type: "manual", // Manually set error type
-                            message: error.msg // Set error message
+                } else if (error.response.status === 400) { // If the server returns a 400 status code, set error messages for each field
+                    error.response.data.errors.forEach(error => { // Loop through errors array
+                        setError(error.param, { // Set error messages
+                            type: "manual", // Manually set the error message
+                            message: error.msg // Set the error message text
                         });
                     });
                 }
