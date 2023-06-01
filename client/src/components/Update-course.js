@@ -51,41 +51,32 @@ const UpdateCourse = () => {
   const handleSubmit = async (event) => {
     event.preventDefault();
 
-    const errorMessages = [];
-
-    if (!title) errorMessages.push('Title is required.');
-    if (!description) errorMessages.push('Description is required.');
-
-    setErrors(errorMessages);
-
-    if (errorMessages.length > 0) return;
-
     try {
-      const response = await axios.put(`http://localhost:5000/api/courses/${id}`, {
-        title,
-        description,
-        estimatedTime,
-        materialsNeeded
-      }, {
-        headers: {
-          'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}`
-        }
-      });
+        const response = await axios.put(`http://localhost:5000/api/courses/${id}`, {
+            title,
+            description,
+            estimatedTime,
+            materialsNeeded
+        }, {
+            headers: {
+                'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}`
+            }
+        });
 
-      if (response.status === 204) {
-        navigate('/courses');
-      }
-    } catch (error) {
-      console.error("Error updating course", error);
-      if (error.response) {
-        if (error.response.status === 500) {
-          navigate('/error'); 
-        } else if (error.response.data.errors) {
-          setErrors(error.response.data.errors.map(error => error.msg));
+        if (response.status === 204) {
+            navigate('/courses');
         }
-      }
+    } catch (error) {
+        console.error("Error updating course", error);
+        if (error.response) {
+            if (error.response.status === 500) {
+                navigate('/error'); 
+            } else if (error.response.data.errors) {
+                setErrors(error.response.data.errors);
+            }
+        }
     }
-  };
+};
   
   const handleCancel = (event) => {
     event.preventDefault();
