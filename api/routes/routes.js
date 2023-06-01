@@ -29,7 +29,6 @@ router.get('/users/:id', asyncHandler(async (req, res) => {
   user ? res.status(200).json(user) : res.status(404).json({ message: 'User not found' });
 }));
 
-
 // Create a new user
 router.post('/users', asyncHandler(async (req, res, next) => {
   try {
@@ -50,7 +49,6 @@ router.post('/users', asyncHandler(async (req, res, next) => {
     }
   }
 }));
-
 
 // Get all courses with associated user info
 router.get('/courses', asyncHandler(async (req, res) => {
@@ -99,21 +97,19 @@ router.route('/courses/:id')
     const course = await Course.findByPk(req.params.id);
     if (course) {
       if (course.userId === req.currentUser.id) {
-        const { title, description } = req.body;
-
-        // Check if title and description are provided
-        if (!title || !description) {
-          // Send a 400 error if either field is missing
-          const errors = [];
-
-          if (!title) errors.push('Title is required');
-          if (!description) errors.push('Description is required');
-
-          res.status(400).json({ errors });
-        } else {
-          // Update the course if both fields are provided
+        try {
+          // Update the course
           await course.update(req.body);
           res.status(204).end();
+        } catch (error) {
+          if (error.name === 'SequelizeValidationError') {
+            // Handle validation errors
+            const errors = error.errors.map(err => err.message);
+            res.status(400).json({ errors });
+          } else {
+            // Pass other errors to the global error handler
+            next(error);
+          }
         }
       } else {
         // Send a 403 error if the current user is not the owner of the course
@@ -142,4 +138,3 @@ router.route('/courses/:id')
   }));
 
 module.exports = router;
-
