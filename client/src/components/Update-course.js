@@ -16,11 +16,11 @@ const UpdateCourse = () => {
   useEffect(() => {
     const fetchCourse = async () => {
         try {
-          const response = await axios.get(`http://localhost:5000/api/courses/${id}`);
-          const course = response.data;
+          const response = await axios.get(`http://localhost:5000/api/courses/${id}`); // Fetch course data
+          const course = response.data; // Store course data in a variable
       
           if (course) {
-            if (authenticatedUser.id !== course.userId) {
+            if (authenticatedUser.id !== course.userId) { // If the authenticated user does not own the course, redirect to forbidden page
               navigate('/forbidden');
             } else {
               setTitle(course.title);
@@ -32,12 +32,12 @@ const UpdateCourse = () => {
             navigate('/notfound');
           }
         } catch (error) {
-          if (error.response && error.response.status === 404) {
+          if (error.response && error.response.status === 404) { // If the server returns a 404 status code, navigate to the not found page
             navigate('/notfound');
           }
-          else if (error.response && error.response.status === 403) {
+          else if (error.response && error.response.status === 403) { // If the server returns a 403 status code, navigate to the forbidden page
               navigate('/forbidden');
-          } else if (error.response && error.response.status === 500) {
+          } else if (error.response && error.response.status === 500) { // If the server returns a 500 status code, navigate to the error page
               navigate('/error');
           } else {
             console.error("Error fetching course", error);
@@ -46,20 +46,20 @@ const UpdateCourse = () => {
       };
   
     fetchCourse();
-  }, [id, navigate, authenticatedUser]);
+  }, [id, navigate, authenticatedUser]); // Fetch course data when the component mounts and when the id parameter changes
 
   const handleSubmit = async (event) => {
     event.preventDefault();
 
     try {
-        const response = await axios.put(`http://localhost:5000/api/courses/${id}`, {
+        const response = await axios.put(`http://localhost:5000/api/courses/${id}`, { // Send PUT request to update course
             title,
             description,
             estimatedTime,
             materialsNeeded
         }, {
             headers: {
-                'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}`
+                'Authorization': `Basic ${btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`)}` // Encode user credentials for authentication
             }
         });
 
@@ -71,8 +71,8 @@ const UpdateCourse = () => {
         if (error.response) {
             if (error.response.status === 500) {
                 navigate('/error'); 
-            } else if (error.response.data.errors) {
-                setErrors(error.response.data.errors);
+            } else if (error.response.data.errors) { // If the server returns validation errors, set the errors state
+                setErrors(error.response.data.errors); // Set the errors state
             }
         }
     }
