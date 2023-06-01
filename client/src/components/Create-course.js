@@ -17,7 +17,6 @@ const CreateCourse = () => {
     // Handle form submission
     const handleSubmit = async (event) => {
         event.preventDefault();
-        console.log(authenticatedUser);
 
         // Encode user credentials for authentication
         const encodedCredentials = btoa(`${authenticatedUser.emailAddress}:${authenticatedUser.password}`);
@@ -31,7 +30,7 @@ const CreateCourse = () => {
                 materialsNeeded
             }, {
                 headers: {
-                    'Authorization': `Basic ${encodedCredentials}`
+                    'Authorization': `Basic ${encodedCredentials}` // Send encoded credentials
                 }
             });
 
@@ -43,8 +42,8 @@ const CreateCourse = () => {
             if (error.response) {
                 if (error.response.status === 500) {
                     navigate('/error'); // Navigate to error page if server returns a 500 status code
-                } else if (error.response.data.errors) {
-                    setErrors(error.response.data.errors);
+                } else if (error.response.data.errors) { // If the server returns a 400 status code, set error messages for each field
+                    setErrors(error.response.data.errors); // Set error messages
                 }
             }
         }
