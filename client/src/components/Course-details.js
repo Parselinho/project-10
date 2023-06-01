@@ -14,6 +14,7 @@ function CourseDetail() {
 
     // Context and navigation hooks
     const { authenticatedUser } = useContext(AuthContext);
+
     const navigate = useNavigate();
 
     // Retrieve course ID from URL parameters
@@ -36,11 +37,11 @@ function CourseDetail() {
                 }
             })
             .then(response => {
-                setUser(response.data);
-                setIsLoading(false);
+                setUser(response.data); // Set user state variable
+                setIsLoading(false); 
             })
             .catch(error => {
-                if (!axios.isCancel(error)) {
+                if (!axios.isCancel(error)) { // If the request is not cancelled
                   if (error.response && error.response.status === 500) {
                     // If the server returns a 500 status code, navigate to the error page
                     navigate('/error');
@@ -53,9 +54,9 @@ function CourseDetail() {
     
         // Cleanup function to cancel requests on component 
         return () => {
-            source.cancel();
+            source.cancel(); // Cancel the request
         };
-    }, [id, navigate]);
+    }, [id, navigate]); // Fetch course data when the component mounts and when the id parameter changes
 
     // Render loading message while data is being fetched
     if (isLoading) {
