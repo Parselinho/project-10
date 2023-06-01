@@ -25,12 +25,13 @@ const UserSignUp = () => {
             if (error.response) {
                 if (error.response.status === 500) {
                     navigate('/error'); 
-                } else if (error.response.data.message) { // If the server returns a 400 status code, set error messages
-                    const errorMessage = error.response.data.message;
-                    const field = errorMessage.split(":")[1].split("`")[1]; // Extract field name
-                    setError(field, { // Set error messages for each field
-                        type: "manual", // Manually set error type
-                        message: errorMessage // Set error message
+                } else if (error.response.data.errors) {
+                    error.response.data.errors.forEach(errorMessage => {
+                        const field = errorMessage.split(":")[1].split("`")[1]; // Extract field name
+                        setError(field, { // Set error messages for each field
+                            type: "manual", // Manually set error type
+                            message: errorMessage // Set error message
+                        });
                     });
                 }
             }
