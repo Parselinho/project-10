@@ -5,13 +5,13 @@ import { useForm } from "react-hook-form";
 import { AuthContext } from './context/AuthContext';
 
 const UserSignUp = () => { 
-    const { register, handleSubmit, formState: { errors }, setError } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm(); 
     const navigate = useNavigate();
     const { signIn } = useContext(AuthContext); 
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/users', data);
+            const response = await axios.post('http://localhost:5000/api/users', data); // Send POST request to create a new user
       
             if (response.status === 201) {
                 const signedIn = await signIn(data.emailAddress, data.password); // Sign in the user
@@ -25,11 +25,11 @@ const UserSignUp = () => {
             if (error.response) {
                 if (error.response.status === 500) {
                     navigate('/error'); 
-                } else if (error.response.data.errors) {
-                    error.response.data.errors.forEach(error => {
-                        setError(error.param, {
-                            type: "manual",
-                            message: error.msg
+                } else if (error.response.data.errors) { // If the server returns a 400 status code, set error messages for each field
+                    error.response.data.errors.forEach(error => { // Loop through errors and set error messages for each field
+                        setError(error.param, { // Set error messages for each field
+                            type: "manual", // Manually set error type
+                            message: error.msg // Set error message
                         });
                     });
                 }
