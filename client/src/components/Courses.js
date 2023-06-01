@@ -6,7 +6,7 @@ import axios from 'axios';
 function Courses() {
     // State variables
     const [courses, setCourses] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setIsLoading] = useState(true); 
     const [error, setError] = useState(null);
 
     // Hook for navigation
@@ -16,8 +16,8 @@ function Courses() {
     useEffect(() => {
         axios.get('http://localhost:5000/api/courses')
             .then(response => {
-                setCourses(response.data);
-                setIsLoading(false);
+                setCourses(response.data); // Set courses state variable
+                setIsLoading(false); // Set loading state variable
             })
             .catch(error => {
                 if (error.response && error.response.status === 500) {
@@ -30,7 +30,7 @@ function Courses() {
     }, [navigate]);
 
     // Render loading message while data is being fetched
-    if (isLoading) {
+    if (isLoading) { 
         return <div>Loading...</div>;
     }
 
