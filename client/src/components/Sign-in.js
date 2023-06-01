@@ -11,24 +11,25 @@ const UserSignIn = () => {
 
   // Access signIn from AuthContext
   const { signIn } = useContext(AuthContext);
+
   const navigate = useNavigate();
   const location = useLocation();
 
-  let { from } = location.state || { from: { pathname: "/courses" } }; 
+  let { from } = location.state || { from: { pathname: "/courses" } };  // Redirect to previous page after sign in
 
   // Handle form submission
   const handleSubmit = async (event) => {
     event.preventDefault();
     
     try {
-      const signedIn = await signIn(emailAddress, password);
+      const signedIn = await signIn(emailAddress, password); 
       if(signedIn) {
         navigate(from);
       }
     } catch (error) {
       if (error.response && error.response.status === 500) {
         navigate('/error');
-      } else if (error.response && error.response.status === 401) {
+      } else if (error.response && error.response.status === 401) { 
         setErrors('Invalid email or password');
       } else {
         console.error("Error signing in", error);
