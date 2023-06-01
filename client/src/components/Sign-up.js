@@ -25,11 +25,11 @@ const UserSignUp = () => {
             if (error.response) {
                 if (error.response.status === 500) {
                     navigate('/error'); 
-                } else if (error.response.data.errors) { // If the server returns validation errors, display them
-                    error.response.data.errors.forEach(error => { // Loop through the errors and set them on the form
-                        setError(error.param, { // Use setError to set errors on the form
-                            type: "manual", // Manually set the error type so that we can clear it when the error is resolved
-                            message: error.msg // Set the error message
+                } else if (error.response.data.errors) {
+                    error.response.data.errors.forEach(error => {
+                        setError(error.param, {
+                            type: "manual",
+                            message: error.msg
                         });
                     });
                 }
