@@ -1,20 +1,21 @@
-import React, { useContext } from 'react';  
+import React, { useContext, useState } from 'react';  
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from "react-hook-form";
 import { AuthContext } from './context/AuthContext';
 
 const UserSignUp = () => { 
-    const { register, handleSubmit, formState: { errors }, setError } = useForm(); 
+    const { register, handleSubmit } = useForm(); 
     const navigate = useNavigate();
-    const { signIn } = useContext(AuthContext); 
+    const { signIn } = useContext(AuthContext);
+    const [errors, setErrors] = useState([]); 
 
     const onSubmit = async (data) => {
         try {
-            const response = await axios.post('http://localhost:5000/api/users', data); // Send POST request to create a new user
+            const response = await axios.post('http://localhost:5000/api/users', data);
       
             if (response.status === 201) {
-                const signedIn = await signIn(data.emailAddress, data.password); // Sign in the user
+                const signedIn = await signIn(data.emailAddress, data.password); 
         
                 if (signedIn) {
                     navigate('/courses'); 
@@ -25,14 +26,8 @@ const UserSignUp = () => {
             if (error.response) {
                 if (error.response.status === 500) {
                     navigate('/error'); 
-                } else if (error.response.data.errors) {
-                    error.response.data.errors.forEach(errorMessage => {
-                        const field = errorMessage.split(":")[1].split("`")[1]; // Extract field name
-                        setError(field, { // Set error messages for each field
-                            type: "manual", // Manually set error type
-                            message: errorMessage // Set error message
-                        });
-                    });
+                } else if (error.response.status === 400) {
+                    setErrors(error.response.data.errors); 
                 }
             }
         }
@@ -47,22 +42,26 @@ const UserSignUp = () => {
         <>
             <div className="form--centered">
                 <h2 className='bold'>Sign Up</h2>
+                {errors.length > 0 && (
+                    <div>
+                        <h2>Validation Errors</h2>
+                        <ul className='marginBottom'>
+                            {errors.map((error, index) => <li key={index}>{error}</li>)}
+                        </ul>
+                    </div>
+                )}
                 <form onSubmit={handleSubmit(onSubmit)}>
                     <label htmlFor="firstName">First Name</label>
-                    <input {...register("firstName", { required: 'First name is required.' })} id="firstName" name="firstName" type="text" />
-                    {errors.firstName && <span>{errors.firstName.message}</span>} 
+                    <input {...register("firstName", { required: true })} id="firstName" name="firstName" type="text" />
 
                     <label htmlFor="lastName">Last Name</label>
-                    <input {...register("lastName", { required: 'Last name is required.' })} id="lastName" name="lastName" type="text" />
-                    {errors.lastName && <span>{errors.lastName.message}</span>}
+                    <input {...register("lastName", { required: true })} id="lastName" name="lastName" type="text" />
 
                     <label htmlFor="emailAddress">Email Address</label>
-                    <input {...register("emailAddress", { required: 'Email address is required.' })} id="emailAddress" name="emailAddress" type="email" />
-                    {errors.emailAddress && <span>{errors.emailAddress.message}</span>}
+                    <input {...register("emailAddress", { required: true })} id="emailAddress" name="emailAddress" type="email" />
 
                     <label htmlFor="password">Password</label>
-                    <input {...register("password", { required: 'Password is required.' })} id="password" name="password" type="password" />
-                    {errors.password && <span>{errors.password.message}</span>}
+                    <input {...register("password", { required: true })} id="password" name="password" type="password" />
 
                     <button className="button" type="submit">Sign Up</button>
                     <button className="button button-secondary" onClick={handleCancel}>Cancel</button>
